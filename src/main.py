@@ -1,16 +1,51 @@
-import fitz 
-doct=fitz.open("D:\\Jazmin\\Archivos Personales\\Facultad\\Facultad Analista de Sistemas\\5 CUATRI\\4Practica Profesional\\Recibos\\COL\\VIMEO_SD_PRESENTADA_1BIM_2022.pdf")
-pag=doct.load_page(0)
-resultado=pag.search_for("Transactions taxed with the general rate")
-# extraer = pag.get_textbox(resultado)
+# ***Formato separado**
+# 
+from tabula import read_pdf
+from tabulate import tabulate
+import pandas as pd
+import numpy as np
+import re
+# doct=read_pdf("D:\\Jazmin\\Archivos Personales\\Facultad\\Facultad Analista de Sistemas\\5 CUATRI\\4Practica Profesional\\Recibos\\COL\\VIMEO_SD_PRESENTADA_1BIM_2022.pdf")
 
-convertido=pag.get_text("xhtml")
+#**Formulario IvA-ARG
+doct=read_pdf("D:\\Jazmin\\Archivos Personales\\Facultad\\Facultad Analista de Sistemas\\5 CUATRI\\4Practica Profesional\\Recibos\\ARG\\PruebaAR02_IVA_DDJJ.pdf")
 
-# for line in convertido:
-#     print(line)
 
-print(convertido)
-doct_html=open("documento.html","w")
-doct_html.write(convertido)
-doct_html.close()
-print(doct.get_toc())
+# año_gravable= doct[0].iloc[[1],[3]] # pendiente separar cuit y periodo fiscal 
+#form_razon=doct[0].iloc[[4],[0]] #pendiente separar formulario y razon social 
+# nit= esta todo unido activi principal 
+reg = re.compile(r'[0-9]{2}-[0-9]{8}-[0-9]{1}')
+#actividad_princ= print(doct[0].iloc[[3],[3]]) #pendiente separar form, CUIT, actividad principal y N° verificador
+res = reg.search(str(doct[0].iloc[[3],[3]]))
+print(res.group(0))
+#Saldo_proveedores = print(str(doct[0].iloc[[11],[3]])) #pendiente separar CUIT y valor 
+
+#valores todos
+
+# for fila in doct[0].loc[11:].itertuples():#salo las primeras 11 filas
+#     print(fila[1], fila[4])
+    
+  
+
+
+
+#**Formulario ICA-COL
+#doct=read_pdf("D:\\Jazmin\\Archivos Personales\\Facultad\\Facultad Analista de Sistemas\\5 CUATRI\\4Practica Profesional\\Recibos\\COL\\Decla. ICA II BIM 2022 - CO10.pdf")
+
+# año_gravable=doct[0].iloc[[0],[0]]
+# periodo fiscal= n/a esta tomado con x y no se lee
+# razon_social=doct[0].iloc[[2],[3]]
+# nit=doct[0].iloc[[4],[3]]
+# actividad_princ=doct[0].iloc[[7],[0]]
+    
+# # print(f'{fila[1]}|{fila[17]}|{fila[18]}') ** impresión valores formulario ICA
+# for fila in doct[0].loc[10:].itertuples():#salo las primeras 10 filas
+#     valor = 0
+
+#     if type(fila[17]) == str:
+#         valor = fila[17]
+#     if type(fila[18]) == str:
+#         valor = fila[18]
+#     valores_ica={fila[1]}|{valor}
+#     #print(f'{fila[1]}|{valor}')
+ 
