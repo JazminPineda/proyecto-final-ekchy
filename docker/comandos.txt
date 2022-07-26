@@ -1,0 +1,8 @@
+# Corre una imagen de python con docker
+docker run -it  -p 80:80 python:alpine
+
+# Actualiza la imagen de docker con los ultimos cambios
+docker-compose build
+
+# Corre el código de la imagen
+docker-compose up
