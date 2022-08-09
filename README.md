@@ -11,3 +11,8 @@ En la carpeta [`mockups`](/mockups/) se encuentran los mockups de la app.
 
 En el proyecto de Github [PP3 User Stories](https://github.com/users/JazminPineda/projects/1/views/1)
 se puede visualizar como esta distribuido por etapas el proyecto, en cada etapa se tiene un proceso atomizado por historias de usuario en esta app..
+
+
+# Comandos
+
+`docker-compose run --rm proyectofinalekchy sh -c "python manage.py startapp user"`
