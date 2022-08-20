@@ -8,11 +8,11 @@ import locale # separador de mil en US O UK
 
 ruta_col = "app/dataextraction/Recibos/COL/Decla. IVA II BIM 2022 - CO10.pdf"
 
-with pdfplumber.open(ruta_col) as pdf:
+with pdfplumber.open(ruta_col, laparams={'detect_vertical': True, 'word_margin':1, 'char_margin':20}) as pdf:
     pag = pdf.pages[0]
-    text = pag.extract_text()
+    text = pag.extract_text(x_tolerance=3, y_tolerance=3)
 
-
+#print(text)
 # Lectura de formulario descripción, renglon y valor
 # for m in re.finditer(r'.+?\s\d{2}\s(\d{1,3}[,]?){1,}', text):
 #     print(m.group(0))
@@ -44,8 +44,17 @@ anio_output = anio_regex.group(0).replace(" ", "")
 
 n_formulario = text.split('\n')[3]
 n_formulario_output = n_formulario[:3]
+if n_formulario_output == "300":
+    nombre_output = "IVA"
 n_verificacion_output = text.split('\n')[3]
 
 apagar_output = int(dic_renglones['Total saldo a pagar'].replace(",", ""))
 afavor_output = int(dic_renglones['o Total saldo a favor'].replace(",", ""))
-print(apagar_output, afavor_output)
+
+#fecha_present = dic_renglones['982. CódFiigrmo aC o'].replace(",", "")
+
+#fecha_present = pag.extract_text()
+
+#print(dic_renglones)
+
+print(id_output, nombre_output, periodo_output, anio_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, nombre_output)
