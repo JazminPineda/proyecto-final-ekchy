@@ -1,7 +1,6 @@
 asgiref==3.5.2
 astroid==2.11.7
 dill==0.3.5.1
-Django==4.0.7
 flake8==5.0.4
 gunicorn==20.1.0
 isort==5.10.1
@@ -18,3 +17,16 @@ tomli==2.0.1
 tomlkit==0.11.2
 typing_extensions==4.3.0
 wrapt==1.14.1
+attrs==22.1.0
+Django==3.2.15
+djangorestframework==3.12.4
+drf-spectacular==0.15.1
+gunicorn==20.1.0
+inflection==0.5.1
+jsonschema==4.9.1
+psycopg2-binary==2.8.6
+pyrsistent==0.18.1
+pytz==2022.1
+PyYAML==6.0
+sqlparse==0.4.2
+uritemplate==4.1.1
