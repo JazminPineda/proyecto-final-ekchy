@@ -1,60 +1,80 @@
 # Formulario 300 IVA Colombia
-
+from cgi import test
 from posixpath import split
 import pdfplumber
 import re
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale # separador de mil en US O UK
 
-ruta_col = "app/dataextraction/Recibos/COL/Decla. IVA II BIM 2022 - CO10.pdf"
 
-with pdfplumber.open(ruta_col, laparams={'detect_vertical': True, 'word_margin':1, 'char_margin':20}) as pdf:
-    pag = pdf.pages[0]
-    text = pag.extract_text(x_tolerance=3, y_tolerance=3)
+class ExtraccionColombia:
+    
+    ruta_archivo = "app/dataextraction/Recibos/COL/Decla. IVA II BIM 2022 - CO10.pdf"
+    formato_texto = r'.+?\s\d{2}\s(\d{1,3}[,]?){1,}' #1
+    desempaq_regex = r'\s\d{2}\s' #2
+    anio = r'Año\s([0-9]\s){4}' #3
+    periodo_regex = r'([1-6]\s){1}' #4
+    anio_regex = r'([0-9]\s){4}' #5
+    
+    
 
+    def lectura(self, ruta_archivo):
+        with pdfplumber.open(ruta_archivo, laparams={'detect_vertical': True, 'word_margin':1, 'char_margin':20}) as pdf:
+            pag = pdf.pages[0]
+            text = pag.extract_text(x_tolerance=3, y_tolerance=3)
+        return text
+ 
 #print(text)
 # Lectura de formulario descripción, renglon y valor
 # for m in re.finditer(r'.+?\s\d{2}\s(\d{1,3}[,]?){1,}', text):
 #     print(m.group(0))
-nombres_form=[]
-dic_renglones = {}
-categorias = [] # Descripcion
-for m in re.finditer(r'.+?\s\d{2}\s(\d{1,3}[,]?){1,}', text):
-    renglon = m.group(0)
-    categoria, valor = (re.split(r'\s\d{2}\s', renglon)) #desempaquetado Unpacking de datos(tupla/lista)
-    categorias.append(categoria)
-    dic_renglones[categoria.strip()] = valor
 
-#print(categorias)
+    def procesamiento(self, text):
+        nombres_form=[]
+        dic_renglones = {}
+        categorias = [] # Descripcion
+
+        for m in re.finditer(self.formato_texto, text): #1
+            renglon = m.group(0)
+            categoria, valor = (re.split(self.desempaq_regex, renglon)) #2 desempaquetado Unpacking de datos(tupla/lista) 
+            categorias.append(categoria)
+            dic_renglones[categoria.strip()] = valor
+        
+        return dic_renglones # devuelve el dicc?
+
+        #print(categorias)
+
+    def extraccion(self, text, dic_renglones):
+        
+        id_empresa =  text.split('\n')[6]
+        id_output = id_empresa.replace(" ", "")
+
+        nombre_empresa =  text.split('\n')[8]
+        nombre_output = nombre_empresa[:-3]
+
+        annio = re.search(self.anio, text) #3
+        perioddo = re.search(self.periodo_regex, annio.group(0)) #4
+        periodo_output = perioddo.group(0).replace(" ", "")
 
 
-id_empresa =  text.split('\n')[6]
-id_output = id_empresa.replace(" ", "")
+        anio_regex = re.search(self.anio_regex, annio.group(0)) #5
+        anio_output = anio_regex.group(0).replace(" ", "")
 
-nombre_empresa =  text.split('\n')[8]
-nombre_output = nombre_empresa[:-3]
+        n_formulario = text.split('\n')[3]
+        n_formulario_output = n_formulario[:3]
+        if n_formulario_output == "300":
+            nombre_output = "IVA"
+        n_verificacion_output = text.split('\n')[3]
 
-anio = re.search(r'Año\s([0-9]\s){4}', text)
-periodo_regex = re.search(r'([1-6]\s){1}',anio.group(0))
-periodo_output = periodo_regex.group(0).replace(" ", "")
+        apagar_output = int(dic_renglones['Total saldo a pagar'].replace(",", ""))
+        afavor_output = int(dic_renglones['o Total saldo a favor'].replace(",", ""))
 
+        #fecha_present = dic_renglones['982. CódFiigrmo aC o'].replace(",", "")
 
-anio_regex = re.search(r'([0-9]\s){4}', anio.group(0))
-anio_output = anio_regex.group(0).replace(" ", "")
+        #fecha_present = pag.extract_text()
 
-n_formulario = text.split('\n')[3]
-n_formulario_output = n_formulario[:3]
-if n_formulario_output == "300":
-    nombre_output = "IVA"
-n_verificacion_output = text.split('\n')[3]
+        #print(dic_renglones)
+    def proces_BaseDatos(self):
+        pass
 
-apagar_output = int(dic_renglones['Total saldo a pagar'].replace(",", ""))
-afavor_output = int(dic_renglones['o Total saldo a favor'].replace(",", ""))
-
-#fecha_present = dic_renglones['982. CódFiigrmo aC o'].replace(",", "")
-
-#fecha_present = pag.extract_text()
-
-#print(dic_renglones)
-
-print(id_output, nombre_output, periodo_output, anio_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, nombre_output)
+    print(id_output, nombre_output, periodo_output, anio_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, nombre_output)

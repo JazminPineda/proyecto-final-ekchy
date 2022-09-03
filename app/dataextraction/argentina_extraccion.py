@@ -7,8 +7,14 @@ import locale # separador de mil en US O UK
 
 class ExtraccionArgentina:
     ruta_archivo = "app/dataextraction/Recibos/ARG/AR02 BSF AR02_IVA_02.2022_F 731 DDJJ .pdf"
-    id_tax_regex = r''
+    #Atributos
+    proceso_regex = r'[\d|\.]+,\d{2}$' #0
+    id_tax_regex = r'\d{2}\-\d{8}\-\d{1}' #1
+    periodo_regex = r'\d{2}\-\d{4}\s\d{0}' #2
+    anio_regex = r'\d{2}\-\d{4}\s\d{0}' #3
+    n_reguex = r'\d{6}\s+\/\s+\d{6}$' #4
 
+    """Defino comportamientos y metodos para la clase, defino la estructura"""
 
     def lectura(self, ruta_archivo):
         if len(ruta_archivo) < 1:
@@ -23,25 +29,24 @@ class ExtraccionArgentina:
         dic_renglones = {}
         categorias = [] # Descripcion
         lineas = text.split("\n")
-
-        #print(text)
+       
         for linea in  lineas:
-            if(re.search(r'[\d|\.]+,\d{2}$', linea)):
-                valor = re.findall(r'[\d|\.]+,\d{2}$', linea)
-                clave = re.sub(r'[\d|\.]+,\d{2}$',"",linea).strip()
-
+            if(re.search(self.proceso_regex, linea)): #0
+                valor = re.findall(self.proceso_regex, linea) #0
+                clave = re.sub(self.proceso_regex,"",linea).strip() #0
                 dic_renglones[clave] = valor
-
+       
+        return lineas
 
     def extraccion(self, text, lineas):
-        id_empresa = re.findall(r'\d{2}\-\d{8}\-\d{1}', text)#1
+        id_empresa = re.findall(self.id_tax_regex, text) #1
         id_output = id_empresa[0]
 
         nombre_output =  lineas[6].split(":")[1]
 
         anio = lineas[2]
-        periodo_regex = re.search(r'\d{2}\-\d{4}\s\d{0}', anio)
-        periodo_validar = periodo_regex.group(0).split("-")[0]
+        periodo_encontrado = re.search(self.periodo_regex, anio) #2
+        periodo_validar = periodo_encontrado.group(0).split("-")[0]
 
         diccion_numero_palabras = {"01": 1, "02": 2, "03": 3, "04": 4, "05": 5, "06": 6, "07": 7,  "08": 8, "09": 9 }
         for valor in diccion_numero_palabras:
@@ -50,16 +55,16 @@ class ExtraccionArgentina:
 
 
 
-        anio_regex = re.search(r'\d{2}\-\d{4}\s\d{0}', anio)
-        anio_output = anio_regex.group(0).split("-")[1]
+        anio_conver = re.search(self.anio_regex, anio) #3
+        anio_output = anio_conver.group(0).split("-")[1]
 
         n_formulario_output = lineas[5].split(".")[1]
         if n_formulario_output == "731":
             nombre_formulario = "IVA"
 
         n_for_verfic = lineas[4].split(".")
-        n_reguex =re.search(r'\d{6}\s+\/\s+\d{6}$', n_for_verfic[0])
-        n_for_verifc = n_reguex.group(0).replace(" ", "")
+        n_forconver =re.search(self.n_reguex, n_for_verfic[0]) #4
+        n_for_verifc = n_forconver.group(0).replace(" ", "")
 
 
         apagar_output = lineas[43].split(' ')[7]
@@ -68,9 +73,12 @@ class ExtraccionArgentina:
         #puede ser otra posibilidad/ el tema es que cambia la palabra final
         #dic_renglones['Saldo de impuesto a favor de AFIP'][0]
 
+        return (id_output, nombre_output, period_outuput, anio_output, n_formulario_output,  n_for_verifc, apagar_output, afavor_output, nombre_formulario)
+    
+    def proces_BaseDatos(self):
+        pass
 
-
-        print(id_output, nombre_output, period_outuput, anio_output, n_formulario_output,  n_for_verifc, apagar_output, afavor_output, nombre_formulario)
+    # print(id_output, nombre_output, period_outuput, anio_output, n_formulario_output,  n_for_verifc, apagar_output, afavor_output, nombre_formulario)
 
 
 

@@ -20,3 +20,16 @@ class TestArgentinaExtraction(unittest.TestCase):
         with self.assertRaises(Exception):
             extraccion = ExtraccionArgentina()
             resultado = extraccion.lectura("")
+
+    def test_extraccion_argentina_validaformulario_pais(self):
+        """Test prueba si es correcto el numero de formualario del pais Argentina"""
+        if n_formulario_output == "731":
+            nombre_formulario = "IVA"
+        else:
+            print("Revisar ")
+
+     def test_extraccion_argentina_procesamiento_regex(self):
+        pass
+    
+    def test_extraccion_argentina_base_datos(self):
+        pass
