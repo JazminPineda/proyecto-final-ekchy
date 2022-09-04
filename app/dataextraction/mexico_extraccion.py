@@ -4,6 +4,7 @@ import pdfplumber
 import re
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale # separador de mil en US O UK
+from app.app.models import Extraccion # Modulo BD
 
 class ExtraccionMexico:
     ruta_archivo = "app/dataextraction/Recibos/MEX/MEX_VAT_Feb2022_Detail.pdf"
@@ -16,9 +17,9 @@ class ExtraccionMexico:
             text = pag.extract_text(x_tolerance=1, y_tolerance=1)
             lineas =text.split('\n')
         return lineas
-        #rint(lineas)
+        
 
-     def extraccion(self, lineas):
+    def extraccion(self, lineas):
         id_empresa = lineas[1]
         id_output = id_empresa.split(" ")[1]
 
@@ -54,7 +55,7 @@ class ExtraccionMexico:
         else:
             print("No es un recibo de pago valido ")
 
-        #print(nomb_formulario)
+    
         n_formulario = lineas[6].split(" ")
         n_verificacion_output= n_formulario[3]
 
@@ -62,11 +63,14 @@ class ExtraccionMexico:
         apagar_output = lineas[14]
         afavor_output = "0"
 
-    def proces_BaseDatos(self):
-        pass
+        datos = (id_output, nombre_output, period_outuput, ano_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, fecha_present_output, nomb_output)
+        return datos
+
+    def guardar_datos(self, process_id, datos):
+        modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "MEX")
 
 
-print(id_output, nombre_output, period_outuput, ano_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, fecha_present_output, nomb_output)
+
 
 
 

@@ -3,7 +3,9 @@ from posixpath import split
 import pdfplumber
 import re
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
-import locale # separador de mil en US O UK
+import locale
+
+# from app.app.models import Extraccion # Modulo BD
 
 class ExtraccionArgentina:
     ruta_archivo = "app/dataextraction/Recibos/ARG/AR02 BSF AR02_IVA_02.2022_F 731 DDJJ .pdf"
@@ -72,13 +74,9 @@ class ExtraccionArgentina:
 
         #puede ser otra posibilidad/ el tema es que cambia la palabra final
         #dic_renglones['Saldo de impuesto a favor de AFIP'][0]
-
-        return (id_output, nombre_output, period_outuput, anio_output, n_formulario_output,  n_for_verifc, apagar_output, afavor_output, nombre_formulario)
+        datos = (id_output, nombre_output, period_outuput, anio_output, n_formulario_output,  n_for_verifc, apagar_output, afavor_output, nombre_formulario)
+        return datos
     
-    def proces_BaseDatos(self):
+    def gardar_datos(self, process_id, datos):
+        # modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "ARG")
         pass
-
-    # print(id_output, nombre_output, period_outuput, anio_output, n_formulario_output,  n_for_verifc, apagar_output, afavor_output, nombre_formulario)
-
-
-

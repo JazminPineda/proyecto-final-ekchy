@@ -5,7 +5,7 @@ import pdfplumber
 import re
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale # separador de mil en US O UK
-
+from app.app.models import Extraccion # Modulo BD
 
 class ExtraccionColombia:
     
@@ -49,8 +49,8 @@ class ExtraccionColombia:
         id_empresa =  text.split('\n')[6]
         id_output = id_empresa.replace(" ", "")
 
-        nombre_empresa =  text.split('\n')[8]
-        nombre_output = nombre_empresa[:-3]
+        empresa =  text.split('\n')[8]
+        sociedad_output = empresa[:-3]
 
         annio = re.search(self.anio, text) #3
         perioddo = re.search(self.periodo_regex, annio.group(0)) #4
@@ -70,11 +70,14 @@ class ExtraccionColombia:
         afavor_output = int(dic_renglones['o Total saldo a favor'].replace(",", ""))
 
         #fecha_present = dic_renglones['982. CódFiigrmo aC o'].replace(",", "")
-
         #fecha_present = pag.extract_text()
 
-        #print(dic_renglones)
-    def proces_BaseDatos(self):
-        pass
+        datos = (id_output, sociedad_output, periodo_output, anio_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, nombre_output) 
+        return datos
 
-    print(id_output, nombre_output, periodo_output, anio_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, nombre_output)
+    def gardar_datos(self, process_id, datos):
+        modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "COL")
+
+    
+
+    

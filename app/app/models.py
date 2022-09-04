@@ -23,7 +23,7 @@ class VencimientoImpuesto(models.Model):
     cliente = models.CharField(max_length=50)
     taxId = models.CharField(max_length=5, null=False)
     tipo_presentacion = models.CharField(max_length=20)
-    fechaVencimiento = models.DateTimeField('fecha_vencimiento' null=False)
+    fechaVencimiento = models.DateTimeField('fecha_vencimiento', null=False)
     fechaEntrega = models.DateTimeField('fecha_entrega', null=False)
     review = models.CharField(max_length=60)
 
