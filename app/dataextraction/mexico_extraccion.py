@@ -4,7 +4,7 @@ import pdfplumber
 import re
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale # separador de mil en US O UK
-from app.app.models import Extraccion # Modulo BD
+#from app.app.models import Extraccion # Modulo BD
 
 class ExtraccionMexico:
     ruta_archivo = "app/dataextraction/Recibos/MEX/MEX_VAT_Feb2022_Detail.pdf"
@@ -66,8 +66,8 @@ class ExtraccionMexico:
         datos = (id_output, nombre_output, period_outuput, ano_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, fecha_present_output, nomb_output)
         return datos
 
-    def guardar_datos(self, process_id, datos):
-        modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "MEX")
+    # def guardar_datos(self, process_id, datos):
+    #     modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "MEX")
 
 
 

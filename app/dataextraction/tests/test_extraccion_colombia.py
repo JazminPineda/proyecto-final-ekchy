@@ -3,11 +3,12 @@ import unittest
 from app.dataextraction.cololombia_extraccion import ExtraccionColombia
 
 class TestColombiaExtraction(unittest.TestCase):
+    
     texto = ''
 
     # Prepara los datos para realizar los test
     def setUpClass():
-        ruta_archivo = "app\dataextraction\Recibos\C\OLDecla. IVA II BIM 2022 - CO10.pdf"
+        ruta_archivo = "app\dataextraction\Recibos\COL\Decla. IVA II BIM 2022 - CO10.pdf"
         extraccion = ExtraccionColombia()
         TestColombiaExtraction.texto = extraccion.lectura(ruta_archivo)
 
@@ -33,4 +34,3 @@ class TestColombiaExtraction(unittest.TestCase):
         self.assertEqual(n_formulario_output, "300")
 
       
-s

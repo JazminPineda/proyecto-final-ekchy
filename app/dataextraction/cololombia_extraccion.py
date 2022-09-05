@@ -5,7 +5,7 @@ import pdfplumber
 import re
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale # separador de mil en US O UK
-from app.app.models import Extraccion # Modulo BD
+#from app.app.models import Extraccion # Modulo BD
 
 class ExtraccionColombia:
     
@@ -75,8 +75,8 @@ class ExtraccionColombia:
         datos = (id_output, sociedad_output, periodo_output, anio_output, n_formulario_output, n_verificacion_output, apagar_output, afavor_output, nombre_output) 
         return datos
 
-    def gardar_datos(self, process_id, datos):
-        modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "COL")
+    # def gardar_datos(self, process_id, datos):
+    #     modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "COL")
 
     
 
