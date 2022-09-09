@@ -13,6 +13,5 @@ migrate:
 startproject:
 	docker-compose run --rm proyectofinalekchy sh -c "django-admin startproject app ."
 
-createsuperuser:
-	docker-compose run --rm proyectofinalekchy sh -c "python manage.py createsuperuser"
+
 
