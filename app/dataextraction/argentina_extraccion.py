@@ -5,10 +5,17 @@ import re
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale
 
+from app.dataextraction.clase_abstracta import Extraer
+
 # from app.app.models import Extraccion # Modulo BD
 
-class ExtraccionArgentina:
+class ExtraccionArgentina(Extraer):#a#
     ruta_archivo = "app/dataextraction/Recibos/ARG/AR02 BSF AR02_IVA_02.2022_F 731 DDJJ .pdf"
+
+    #Se inicia constructor
+    def __init__(self, ruta):
+        super().__init__(ruta)
+
     #Atributos
     proceso_regex = r'[\d|\.]+,\d{2}$' #0
     id_tax_regex = r'\d{2}\-\d{8}\-\d{1}' #1
@@ -31,13 +38,13 @@ class ExtraccionArgentina:
         dic_renglones = {}
         categorias = [] # Descripcion
         lineas = text.split("\n")
-       
+
         for linea in  lineas:
             if(re.search(self.proceso_regex, linea)): #0
                 valor = re.findall(self.proceso_regex, linea) #0
                 clave = re.sub(self.proceso_regex,"",linea).strip() #0
                 dic_renglones[clave] = valor
-       
+
         return lineas
 
     def extraccion(self, text, lineas):
@@ -76,7 +83,7 @@ class ExtraccionArgentina:
         #dic_renglones['Saldo de impuesto a favor de AFIP'][0]
         datos = (id_output, nombre_output, period_outuput, anio_output, n_formulario_output,  n_for_verifc, apagar_output, afavor_output, nombre_formulario)
         return datos
-    
+
     def gardar_datos(self, process_id, datos):
         # modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "ARG")
         pass

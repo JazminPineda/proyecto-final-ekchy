@@ -2,7 +2,7 @@ import unittest
 from app.dataextraction.argentina_extraccion import ExtraccionArgentina
 
 class TestArgentinaExtraction(unittest.TestCase):
-    
+
     texto = ''
     def setUpClass():
         ruta_archivo = "app\dataextraction\Recibos\ARG\AR02 BSF AR02_IVA_02.2022_F 731 DDJJ .pdf"
@@ -21,7 +21,7 @@ class TestArgentinaExtraction(unittest.TestCase):
             extraccion = ExtraccionArgentina()
             extraccion.lectura("")
 
-   
+
     def test_extraccion_argentina_validaformulario_pais(self ):
         """Test prueba si es correcto el numero de formualario del pais Argentina"""
         n_formulario_output = ''
@@ -34,6 +34,5 @@ class TestArgentinaExtraction(unittest.TestCase):
         self.assertEqual(len(resultado),9)
         self.assertEqual(n_formulario_output, "731")
 
-   
-    
-   
+
+

@@ -3,11 +3,18 @@ from posixpath import split
 import pdfplumber
 import re
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
-import locale # separador de mil en US O UK
+import locale
+
+from app.dataextraction.clase_abstracta import Extraer # separador de mil en US O UK
 #from app.app.models import Extraccion # Modulo BD
 
-class ExtraccionMexico:
+class ExtraccionMexico(Extraer):#a#
     ruta_archivo = "app/dataextraction/Recibos/MEX/MEX_VAT_Feb2022_Detail.pdf"
+
+    #Se inicia constructor
+    def __init__(self, ruta):
+        super().__init__(ruta)
+
 
     def lectura(self, ruta_archivo):
         #extra texto pero me daña lo demas
@@ -17,7 +24,7 @@ class ExtraccionMexico:
             text = pag.extract_text(x_tolerance=1, y_tolerance=1)
             lineas =text.split('\n')
         return lineas
-        
+
 
     def extraccion(self, lineas):
         id_empresa = lineas[1]
@@ -55,7 +62,7 @@ class ExtraccionMexico:
         else:
             print("No es un recibo de pago valido ")
 
-    
+
         n_formulario = lineas[6].split(" ")
         n_verificacion_output= n_formulario[3]
 
