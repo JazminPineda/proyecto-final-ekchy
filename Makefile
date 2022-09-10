@@ -13,5 +13,8 @@ migrate:
 startproject:
 	docker-compose run --rm proyectofinalekchy sh -c "django-admin startproject app ."
 
+django-shell:
+	docker-compose run --rm -it proyectofinalekchy sh -c "python manage.py shell"
 
-
+docker-shell:
+	docker-compose run --rm -it proyectofinalekchy sh
