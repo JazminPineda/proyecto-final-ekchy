@@ -7,7 +7,7 @@ class TestArgentinaExtraction(unittest.TestCase):
     texto = ""
 
     def setUpClass():
-        ruta_archivo = "dataextraction\Recibos\ARG\AR02 BSF AR02_IVA_02.2022_F 731 DDJJ .pdf"
+        ruta_archivo =  "dataextraction/Recibos/ARG/AR02 BSF AR02_IVA_02.2022_F 731 DDJJ .pdf"
 
         extraccion = ExtraccionArgentina()
         TestArgentinaExtraction.texto = extraccion.lectura(ruta_archivo)

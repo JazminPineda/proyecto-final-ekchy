@@ -6,7 +6,7 @@ class TestMexicoExtraction(unittest.TestCase):
     texto = ""
 
     def setUpClass():
-        ruta_archivo = "dataextraction\Recibos\MEX\MEX_VAT_Feb2022_Detail.pdf"
+        ruta_archivo = "dataextraction/Recibos/MEX/MEX_VAT_Feb2022_Detail.pdf"
         extraccion = ExtraccionMexico()
         TestMexicoExtraction.texto = extraccion.lectura(ruta_archivo)
 

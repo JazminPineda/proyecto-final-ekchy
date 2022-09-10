@@ -8,7 +8,7 @@ class TestColombiaExtraction(unittest.TestCase):
 
     # Prepara los datos para realizar los test
     def setUpClass():
-        ruta_archivo = "dataextraction\Recibos\COL\Decla. IVA II BIM 2022 - CO10.pdf"
+        ruta_archivo = "dataextraction/Recibos/COL/Decla. IVA II BIM 2022 - CO10.pdf"
 
         extraccion = ExtraccionColombia()
         TestColombiaExtraction.texto = extraccion.lectura(ruta_archivo)
