@@ -2,6 +2,8 @@ from cgi import test
 from posixpath import split
 import pdfplumber
 import re
+from datetime import date
+
 
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale
@@ -94,7 +96,8 @@ class ExtraccionArgentina(Extraer):  # a#
             saldoPagado = apagar_output,
             saldoFavor= afavor_output,
             nombreFormulario = nombre_formulario,
-            pais =Pais(codigo_iso="ARG")
+            pais =Pais(codigo_iso="ARG"),
+            fecha_procesado = date.today(),
         )
         return datos
 

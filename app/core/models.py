@@ -121,7 +121,7 @@ class Extraccion(models.Model):
     saldoPagado = models.IntegerField(null=False)
     saldoFavor = models.IntegerField(null=False)
     pais = models.ForeignKey(Pais, on_delete=models.DO_NOTHING) #no estoy segura de la relación uno a muchos
-
+    fecha_procesado = models.DateField(auto_now=True)
 
 ## Tablas de procesos
 
