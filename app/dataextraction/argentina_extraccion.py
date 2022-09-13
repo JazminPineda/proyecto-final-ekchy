@@ -2,9 +2,12 @@ from cgi import test
 from posixpath import split
 import pdfplumber
 import re
+from datetime import date
+
 
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale
+from core.models import Extraccion, Pais
 
 from dataextraction.clase_abstracta import Extraer
 
@@ -83,16 +86,18 @@ class ExtraccionArgentina(Extraer):  # a#
 
         # puede ser otra posibilidad/ el tema es que cambia la palabra final
         # dic_renglones['Saldo de impuesto a favor de AFIP'][0]
-        datos = (
-            id_output,
-            nombre_output,
-            period_outuput,
-            anio_output,
-            n_formulario_output,
-            n_for_verifc,
-            apagar_output,
-            afavor_output,
-            nombre_formulario,
+        datos = Extraccion(
+            id_razonsocial = id_output,
+            nombre_empresa = nombre_output,
+            periodo_fiscal = period_outuput,
+            año = anio_output,
+            numeroFormulario = n_formulario_output,
+            n_verificacion = n_for_verifc,
+            saldoPagado = apagar_output,
+            saldoFavor= afavor_output,
+            nombreFormulario = nombre_formulario,
+            pais =Pais(codigo_iso="ARG"),
+            fecha_procesado = date.today(),
         )
         return datos
 
