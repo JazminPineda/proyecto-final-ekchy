@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from app.views import index
+from app.views import index, pdf_upload
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
+    path('pdf-upload', pdf_upload),
     path('api/user/', include('user.urls')),
 ]
