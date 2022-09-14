@@ -3,6 +3,8 @@ import openpyxl #ediciones
 from core.models import Extraccion
 from dataextraction.argentina_extraccion import ExtraccionArgentina
 from collections import defaultdict
+import locale
+from core.models import VencimientoImpuesto, Mes, Año, Impuesto, Empresa, Empleado
 
  # celdas = hoja['A1':'I13']
     # hoja.max_column
@@ -26,33 +28,36 @@ class ProcesamientoExcel():
         return lista
 
     @classmethod
-    def comparo(cls, fila_dic, extrccion_pdf):
-        return fila_dic['id_razonsocial'] == extrccion_pdf.id_razonsocial
+    def comparo(cls, vencimiento, extrccion_pdf):
+        return vencimiento.id_razonsocial == extrccion_pdf.id_razonsocial
 
     @classmethod
     def validar_datos(cls, dato_xls, extraccion_pdf):
-        for fila_dic in dato_xls:
-            if ProcesamientoExcel.comparo(fila_dic, extraccion_pdf):
-                fila_dic['proceso'] = 'ok procesado'
+        for vencimiento in dato_xls:
+            if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
+                vencimiento.proceso  = 'ok procesado'
             else:
-                fila_dic['proceso'] = 'pendiente'
+                vencimiento.proceso = 'pendiente'
         return dato_xls
 
 class ProcesamientoExcelTest():
 
     @classmethod
     def fila_dicc(cls, fila):
-        return {
-            "pais":fila[0],
-            "id_razonsocial":fila[1],
-            "nombre_empresa":fila[2],
-            "periodo_fiscal": fila[3],
-            'nombreFormulario':fila[4],
-            'Fecha_vencimiento':fila[5],
-            'Fecha_envio_cliente':fila[6],
-            'Fecha_revisado':fila[7],
-            'Revisor':fila[8],
-        }
+        excel_datos = VencimientoImpuesto(
+            pais = fila[0],
+            id_razonsocial = fila[1],
+            nombre_empresa = fila[2],
+            periodo_fiscal = fila[3],
+            nombreFormulario = fila[4],
+            fechaVencimiento = fila[5],
+            fechaEntrega = fila[6],
+            fechaRevisado = fila[7],
+            review = fila[8],
+            proceso = fila[9],
+        )
+
+        return excel_datos
 
     @classmethod
     def datos_procesado(cls, rutapdf):
@@ -70,5 +75,7 @@ if __name__ == "django.core.management.commands.shell":
 
     datos = ProcesamientoExcelTest.datos_procesado(rutapdf)
     resultado = ProcesamientoExcel.validar_datos(datos_excel, datos)
+    # guardar
     for i in resultado:
-            print(i['id_razonsocial'],i['proceso'])
+        excel_datos = VencimientoImpuesto(proceso = i['proceso'])
+        print(i['id_razonsocial'],i['proceso'])

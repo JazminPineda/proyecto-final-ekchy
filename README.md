@@ -20,3 +20,4 @@ se puede visualizar como esta distribuido por etapas el proyecto, en cada etapa 
 ## Ejecutar un script python en el contexto de django
 1. `make docker-shell`
 2. `python manage.py shell < dataextraction/lectura_excel.py`
+3. `python manage.py shell < dataextraction/calculos.py`
