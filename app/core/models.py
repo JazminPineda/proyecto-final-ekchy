@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+
 OPCIONES_PAIS = [
     ("COL", "COLOMBIA"),
     ("ARG", "ARGENTINA"),
@@ -24,10 +25,11 @@ OPCIONES_AÑO = [
     ("2023", "2021"),
 ]
 
+
 def document_pdf_file_path(instance, filename):
     """Generate file path for new recipe image."""
     ext = os.path.splitext(filename)[1]
-    filename = f'{uuid.uuid4()}{ext}'
+    filename = f"{uuid.uuid4()}{ext}"
 
 
 class UserManager(BaseUserManager):
@@ -53,10 +55,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-
-
-
-
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
 
@@ -69,16 +67,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "email"
 
+
 class Empleado(models.Model):
     legajo = models.IntegerField(null=False)
-    dni =  models.CharField(max_length=10)
+    dni = models.CharField(max_length=10)
     nombre = models.CharField(max_length=60)
-    responsabilidad = models.CharField(max_length=10, choices=OPCIONES_RESPOSABILIDADES, blank=False)
+    responsabilidad = models.CharField(
+        max_length=10, choices=OPCIONES_RESPOSABILIDADES, blank=False
+    )
     pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre
+
 
 # class Pais(models.Model):
 #     codigo_iso = models.CharField(max_length=2)
@@ -89,20 +91,19 @@ class Empleado(models.Model):
 #     numero = models.IntegerField(default=1)
 
 
-
-
 class VencimientoImpuesto(models.Model):
     OPCIONES_PROCESO = [
         ("PROCESADO", "Procesado"),
         ("NO PROCESADO", "No Procesado"),
-        ]
+    ]
+
     class Mes(models.IntegerChoices):
         ENERO = 1
         FEBRERO = 2
         MARZO = 3
         ABRIL = 4
         MAYO = 5
-        JUNIo =6
+        JUNIo = 6
         JULIO = 7
         AGOSTO = 8
         SEPTIEMBRE = 9
@@ -111,20 +112,20 @@ class VencimientoImpuesto(models.Model):
         DICIEMBRE = 12
 
     pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
-    mes = models.IntegerField( choices=Mes.choices, blank=False) #Relación clase mes
-    año = models.IntegerField( choices=OPCIONES_AÑO, blank=False)
+    mes = models.IntegerField(choices=Mes.choices, blank=False)  # Relación clase mes
+    año = models.IntegerField(choices=OPCIONES_AÑO, blank=False)
     nombre = models.CharField(max_length=20)
-    id_razonsocial = models.CharField(max_length=20) # se añade
-    nombre_empresa = models.CharField(max_length=20) # se añade
-    periodo_fiscal = models.CharField(max_length=20) # se añade
+    id_razonsocial = models.CharField(max_length=20)  # se añade
+    nombre_empresa = models.CharField(max_length=20)  # se añade
+    periodo_fiscal = models.CharField(max_length=20)  # se añade
     cliente = models.CharField(max_length=50)
     taxId = models.CharField(max_length=5, null=False)
-    nombreFormulario = models.CharField(max_length=20)
-    fechaVencimiento = models.DateTimeField(null=False)
-    fechaEntrega = models.DateTimeField(null=False)
-    fechaRevisado =  models.DateTimeField(null=False)
+    nombre_formulario = models.CharField(max_length=20)
+    fecha_vencimiento = models.DateTimeField(null=False)
+    fecha_entrega = models.DateTimeField(null=False)
+    fecha_revisado = models.DateTimeField(null=False)
     review = models.CharField(max_length=60)
-    proceso = models.CharField(max_length=20,choices=OPCIONES_PROCESO, blank=False)
+    proceso = models.CharField(max_length=20, choices=OPCIONES_PROCESO, blank=False)
 
 
 # class Responsabilidad(models.Model):
@@ -132,8 +133,13 @@ class VencimientoImpuesto(models.Model):
 
 
 class Impuesto(models.Model):
-    nombreimpuesto = models.CharField(max_length=10)
-    numero_fomr = models.CharField(max_length=6)
+    class NumeroFormulario(models.IntegerChoices):
+        ARGENTINA = "731"
+        COLOMBIA = "300"
+        MEXICO = "001"
+
+    nombre_impuesto = models.CharField(max_length=10)
+    numero_fomulario = models.CharField(max_length=3, choices=NumeroFormulario.choices, default="", blank=True)
     pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
 
 
@@ -148,38 +154,40 @@ class Impuesto(models.Model):
 class Extraccion(models.Model):
     id_razonsocial = models.CharField(max_length=10)
     nombre_empresa = models.CharField(max_length=50)
-    numeroFormulario = models.CharField(max_length=6)
-    nombreFormulario = models.CharField(max_length=15)
+    numero_formulario = models.CharField(max_length=6)
+    nombre_formulario = models.CharField(max_length=15)
     n_verificacion = models.IntegerField(null=False)
     periodo_fiscal = models.IntegerField(null=False)
-    año = models.IntegerField( choices=OPCIONES_AÑO)
-    saldoPagado = models.IntegerField(null=False)
-    saldoFavor = models.IntegerField(null=False)
+    año = models.IntegerField(choices=OPCIONES_AÑO)
+    saldo_pagado = models.IntegerField(null=False)
+    saldo_favor = models.IntegerField(null=False)
     pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
     fecha_procesado = models.DateField(auto_now=True)
     # documento_pdf = models.FileField(up)
 
+
 ## Tablas de procesos
+
 
 class Proceso(models.Model):
     OPCIONES_ESTADO = [
-        ('INICIADO', 'Iniciado'),
-        ('PROCESADO','Procesado'),
-        ('FINALIZADO','Finalizado')
+        ("INICIADO", "Iniciado"),
+        ("PROCESADO", "Procesado"),
+        ("FINALIZADO", "Finalizado"),
     ]
-    idExtraccion = models.OneToOneField(Extraccion, on_delete=models.DO_NOTHING)
+    id_extraccion = models.OneToOneField(Extraccion, on_delete=models.DO_NOTHING)
     estado = models.CharField(max_length=20, choices=OPCIONES_ESTADO)
 
 
 class Empresa(models.Model):
-    razonSocial =  models.CharField(max_length=50)
+    razonSocial = models.CharField(max_length=50)
     id_razonSocia = models.CharField(max_length=20)
-    impuestos = models.ManyToManyField(Impuesto) ##relacion
-    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False )
+    impuestos = models.ManyToManyField(Impuesto)  ##relacion
+    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
     empleado = models.ManyToManyField(Empleado)
+
 
 class Documento(models.Model):
     id_empresa = models.ManyToManyField(Empresa)
     id_proceso = models.ManyToManyField(Proceso)
     documento_pdf = models.FileField(upload_to=document_pdf_file_path)
-
