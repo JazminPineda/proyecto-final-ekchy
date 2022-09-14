@@ -96,7 +96,7 @@ class ExtraccionArgentina(Extraer):  # a#
             saldoPagado = apagar_output,
             saldoFavor= afavor_output,
             nombreFormulario = nombre_formulario,
-            pais =Pais(codigo_iso="ARG"),
+            pais = Pais.ARGENTINA,
             fecha_procesado = date.today(),
         )
         return datos

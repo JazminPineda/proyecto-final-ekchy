@@ -6,11 +6,11 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 
-OPCIONES_PAIS = [
-    ("COL", "COLOMBIA"),
-    ("ARG", "ARGENTINA"),
-    ("MEX", "MEXICO"),
-]
+class Pais(models.Choices):
+    ARGENTINA = "ARG"
+    COLOMBIA = "COL"
+    MEXICO = "MEX"
+
 
 OPCIONES_RESPOSABILIDADES = [
     ("REV", "Revisor"),
@@ -75,7 +75,7 @@ class Empleado(models.Model):
     responsabilidad = models.CharField(
         max_length=10, choices=OPCIONES_RESPOSABILIDADES, blank=False
     )
-    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
+    pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -111,7 +111,7 @@ class VencimientoImpuesto(models.Model):
         NOVIEMBRE = 11
         DICIEMBRE = 12
 
-    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
+    pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
     mes = models.IntegerField(choices=Mes.choices, blank=False)  # Relación clase mes
     año = models.IntegerField(choices=OPCIONES_AÑO, blank=False)
     nombre = models.CharField(max_length=20)
@@ -140,7 +140,7 @@ class Impuesto(models.Model):
 
     nombre_impuesto = models.CharField(max_length=10)
     numero_fomulario = models.CharField(max_length=3, choices=NumeroFormulario.choices, default="", blank=True)
-    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
+    pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
 
 
 # class RelEmpresaImpuesto:
@@ -161,7 +161,7 @@ class Extraccion(models.Model):
     año = models.IntegerField(choices=OPCIONES_AÑO)
     saldo_pagado = models.IntegerField(null=False)
     saldo_favor = models.IntegerField(null=False)
-    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
+    pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
     fecha_procesado = models.DateField(auto_now=True)
     # documento_pdf = models.FileField(up)
 
@@ -183,7 +183,7 @@ class Empresa(models.Model):
     razonSocial = models.CharField(max_length=50)
     id_razonSocia = models.CharField(max_length=20)
     impuestos = models.ManyToManyField(Impuesto)  ##relacion
-    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
+    pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
     empleado = models.ManyToManyField(Empleado)
 
 
