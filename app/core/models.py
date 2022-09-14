@@ -1,9 +1,33 @@
+from statistics import mode
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
 )
+OPCIONES_PAIS = [
+    ("COL", "COLOMBIA"),
+    ("ARG", "ARGENTINA"),
+    ("MEX", "MEXICO"),
+]
+
+OPCIONES_RESPOSABILIDADES = [
+    ("REV", "Revisor"),
+    ("PREP", "Preparador"),
+    ("GER", "Gerente"),
+]
+
+
+OPCIONES_AÑO = [
+    ("2021", "2021"),
+    ("2022", "2021"),
+    ("2023", "2021"),
+]
+
+def document_pdf_file_path(instance, filename):
+    """Generate file path for new recipe image."""
+    ext = os.path.splitext(filename)[1]
+    filename = f'{uuid.uuid4()}{ext}'
 
 
 class UserManager(BaseUserManager):
@@ -29,6 +53,10 @@ class UserManager(BaseUserManager):
         return user
 
 
+
+
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
 
@@ -41,73 +69,80 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "email"
 
-
-
-class Pais(models.Model):
-    codigo_iso = models.CharField(max_length=2)
+class Empleado(models.Model):
+    legajo = models.IntegerField(null=False)
+    dni =  models.CharField(max_length=10)
     nombre = models.CharField(max_length=60)
+    responsabilidad = models.CharField(max_length=10, choices=OPCIONES_RESPOSABILIDADES, blank=False)
+    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-class Mes(models.Model):
-    nombre = models.CharField(max_length=20)
-    numero = models.IntegerField(default=1)
+    def __str__(self):
+        return self.nombre
 
-class Año(models.Model):
-    año = models.IntegerField(default=2021)
+# class Pais(models.Model):
+#     codigo_iso = models.CharField(max_length=2)
+#     nombre = models.CharField(max_length=60)
+
+# class Mes(models.Model):
+#     nombre = models.CharField(max_length=20)
+#     numero = models.IntegerField(default=1)
+
+
 
 
 class VencimientoImpuesto(models.Model):
-    mes = models.ForeignKey( Mes, on_delete=models.DO_NOTHING) #Relación clase mes
-    año = models.ForeignKey(Año, on_delete=models.DO_NOTHING)
+    OPCIONES_PROCESO = [
+        ("PROCESADO", "Procesado"),
+        ("NO PROCESADO", "No Procesado"),
+        ]
+    class Mes(models.IntegerChoices):
+        ENERO = 1
+        FEBRERO = 2
+        MARZO = 3
+        ABRIL = 4
+        MAYO = 5
+        JUNIo =6
+        JULIO = 7
+        AGOSTO = 8
+        SEPTIEMBRE = 9
+        OCTUBRE = 10
+        NOVIEMBRE = 11
+        DICIEMBRE = 12
+
+    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
+    mes = models.IntegerField( choices=Mes.choices, blank=False) #Relación clase mes
+    año = models.IntegerField( choices=OPCIONES_AÑO, blank=False)
     nombre = models.CharField(max_length=20)
-    razonSocial = ""
+    id_razonsocial = models.CharField(max_length=20) # se añade
+    nombre_empresa = models.CharField(max_length=20) # se añade
+    periodo_fiscal = models.CharField(max_length=20) # se añade
     cliente = models.CharField(max_length=50)
     taxId = models.CharField(max_length=5, null=False)
-    tipo_presentacion = models.CharField(max_length=20)
-    fechaVencimiento = models.DateTimeField('fecha_vencimiento', null=False)
-    fechaEntrega = models.DateTimeField('fecha_entrega', null=False)
+    nombreFormulario = models.CharField(max_length=20)
+    fechaVencimiento = models.DateTimeField(null=False)
+    fechaEntrega = models.DateTimeField(null=False)
+    fechaRevisado =  models.DateTimeField(null=False)
     review = models.CharField(max_length=60)
+    proceso = models.CharField(max_length=20,choices=OPCIONES_PROCESO, blank=False)
 
 
-class Responsabilidad(models.Model):
-    cargo = models.CharField(max_length=30)
-
-
-class Usuarios(models.Model):
-    nombreUsuario = models.IntegerField(max_length=15)
-    correo = models.CharField(null=False) #revisar
-    contraseña = models.CharField(null=False)
+# class Responsabilidad(models.Model):
+#     cargo = models.CharField(max_length=10, choices=OPCIONES_RESPOSABILIDADES, blank=False)
 
 
 class Impuesto(models.Model):
     nombreimpuesto = models.CharField(max_length=10)
     numero_fomr = models.CharField(max_length=6)
-    pais = models.ManyToManyField(Pais)
+    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
 
 
-class Empresa(models.Model):
-    razonSocial =  models.CharField(max_length=50)
-    id_razonSocia = models.CharField(max_length=20)
-    paises = models.ManyToManyField(Pais, through="RelEmpresaImpuesto", related_name="pais")  ##relacion pais
-    impuestos = models.ManyToManyField(Impuesto, through="RelEmpresaImpuesto", related_name="impuesto") ##relacion
-    pais = models.ForeignKey(Pais, on_delete=models.DO_NOTHING)
-
-
-class Empleado(models.Model):
-    legajo = models.IntegerField(null=False)
-    dni =  models.CharField(max_length=10)
-    nombre = models.CharField(max_length=60)
-    responsabilidad = models.ForeignKey(Responsabilidad, on_delete=models.DO_NOTHING)
-    pais = models.OneToOneField(Pais, on_delete=models.DO_NOTHING)
-    nombreUsuario = models.OneToOneField(Usuarios, on_delete=models.DO_NOTHING) #Relación 1 a 1
-    empresa = models.ManyToManyField(Empresa) #Relación 1 a muchoes
-
-
-class RelEmpresaImpuesto:
-    empresa = models.ForeignKey(Empresa, on_delete=models.DO_NOTHING)
-    impuesto = models.ForeignKey(Impuesto, on_delete=models.DO_NOTHING)
-    pais = models.ForeignKey(Pais, on_delete=models.DO_NOTHING)
-    class Meta:
-        unique_together = ({'empresa', 'impuesto', 'pais'})
+# class RelEmpresaImpuesto:
+#     empresa = models.ForeignKey(Empresa, on_delete=models.DO_NOTHING)
+#     impuesto = models.ForeignKey(Impuesto, on_delete=models.DO_NOTHING)
+#     pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
+#     class Meta:
+#         unique_together = ({'empresa', 'impuesto', 'pais'})
 
 
 class Extraccion(models.Model):
@@ -117,19 +152,34 @@ class Extraccion(models.Model):
     nombreFormulario = models.CharField(max_length=15)
     n_verificacion = models.IntegerField(null=False)
     periodo_fiscal = models.IntegerField(null=False)
-    año = models.IntegerField(null=False)
+    año = models.IntegerField( choices=OPCIONES_AÑO)
     saldoPagado = models.IntegerField(null=False)
     saldoFavor = models.IntegerField(null=False)
-    pais = models.ForeignKey(Pais, on_delete=models.DO_NOTHING) #no estoy segura de la relación uno a muchos
+    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False)
     fecha_procesado = models.DateField(auto_now=True)
+    # documento_pdf = models.FileField(up)
 
 ## Tablas de procesos
 
-class DocumentoProceso(models.Model):
+class Proceso(models.Model):
+    OPCIONES_ESTADO = [
+        ('INICIADO', 'Iniciado'),
+        ('PROCESADO','Procesado'),
+        ('FINALIZADO','Finalizado')
+    ]
     idExtraccion = models.OneToOneField(Extraccion, on_delete=models.DO_NOTHING)
-    estado = models.CharField(max_length=20) #cuando se inicializa no se abria problema?
+    estado = models.CharField(max_length=20, choices=OPCIONES_ESTADO)
+
+
+class Empresa(models.Model):
+    razonSocial =  models.CharField(max_length=50)
+    id_razonSocia = models.CharField(max_length=20)
+    impuestos = models.ManyToManyField(Impuesto) ##relacion
+    pais = models.CharField(max_length=3, choices=OPCIONES_PAIS, blank=False )
+    empleado = models.ManyToManyField(Empleado)
 
 class Documento(models.Model):
-    idEmpresa = models.ManyToManyField(Empresa) #relacion uno a muchos
-    url = models.CharField(null=False)
-    idEstadoDoc = models.OneToOneField(DocumentoProceso, on_delete=models.DO_NOTHING) #relacion 1a1
+    id_empresa = models.ManyToManyField(Empresa)
+    id_proceso = models.ManyToManyField(Proceso)
+    documento_pdf = models.FileField(upload_to=document_pdf_file_path)
+
