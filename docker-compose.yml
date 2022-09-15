@@ -5,6 +5,8 @@ services:
     image: proyectofinalekchy
     build:
       context: .
+      args:
+        - DEV=true
       dockerfile: ./Dockerfile
     ports:
       - 8000:8000
