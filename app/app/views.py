@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from core.models import Empresa
 
 def index(request):
     # return HttpResponse('Hello World!')
@@ -13,8 +13,9 @@ def index(request):
 
 def pdf_upload(request):
     # return HttpResponse('Hello World!')
+    empresas = Empresa.objects.all()
     template = 'pdfupload.html'
     context = {
-        "paragraph": 'Awesome test'
+        "empresas": empresas
     }
     return render(request, template, context)
