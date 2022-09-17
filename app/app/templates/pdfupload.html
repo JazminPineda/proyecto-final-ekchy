@@ -6,17 +6,18 @@
         <h1><i class="bi bi-shuffle"></i> Puede subir un pdf</h1>
     </div>
 </div>
-<form class="row g-3" method="post" enctype="multipart/form-data">
-    <select class="form-select" aria-label="Default select example">
+<form class="row g-3" action="/pdf-upload" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <select name="empresa" class="form-select" aria-label="Default select example">
         <option selected>Elija una empresa</option>
         {% for empresa in empresas %}
 
-        <option value="{{empresa}}">{{empresa}}</option>
+        <option value="{{empresa.id}}">{{empresa}}</option>
         {% endfor %}
     </select>
     <div class="mb-3">
         <label for="formFileMultiple" class="form-label">Multiple files input example</label>
-        <input class="form-control" type="file" id="formFileMultiple" multiple>
+        <input name="files" class="form-control" type="file" id="formFileMultiple" multiple>
     </div>
     <div class="col-12">
         <button type="submit" class="btn btn-primary" accept=".pdf,application/pdf,application/x-pdf">Subir

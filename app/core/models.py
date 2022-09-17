@@ -1,3 +1,5 @@
+import os
+import uuid
 from statistics import mode
 from django.db import models
 from django.contrib.auth.models import (
@@ -27,9 +29,11 @@ OPCIONES_AÑO = [
 
 
 def document_pdf_file_path(instance, filename):
-    """Generate file path for new recipe image."""
+    """Generate file path for new pdf file."""
     ext = os.path.splitext(filename)[1]
     filename = f"{uuid.uuid4()}{ext}"
+
+    return os.path.join('uploads', 'pdf', filename)
 
 
 class UserManager(BaseUserManager):
@@ -133,14 +137,17 @@ class VencimientoImpuesto(models.Model):
 
 
 class Impuesto(models.Model):
-    class NumeroFormulario(models.IntegerChoices):
-        ARGENTINA = "731"
-        COLOMBIA = "300"
-        MEXICO = "001"
+    class NumeroFormulario(models.Choices):
+        ARGENTINA_731 = "731"
+        COLOMBIA_300 = "300"
+        MEXICO_001 = "001"
 
     nombre_impuesto = models.CharField(max_length=10)
     numero_fomulario = models.CharField(max_length=3, choices=NumeroFormulario.choices, default="", blank=True)
     pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
+
+    def __str__(self) -> str:
+        return self.nombre_impuesto
 
 
 # class RelEmpresaImpuesto:
@@ -170,24 +177,33 @@ class Extraccion(models.Model):
 
 
 class Proceso(models.Model):
-    OPCIONES_ESTADO = [
-        ("INICIADO", "Iniciado"),
-        ("PROCESADO", "Procesado"),
-        ("FINALIZADO", "Finalizado"),
-    ]
-    id_extraccion = models.OneToOneField(Extraccion, on_delete=models.DO_NOTHING)
-    estado = models.CharField(max_length=20, choices=OPCIONES_ESTADO)
+    class Estados(models.Choices):
+        INICIADO = 'Iniciado'
+        PROCESADO = 'Procesado'
+        FINALIZADO = 'Finalizado'
 
+    id_extraccion = models.OneToOneField(Extraccion, on_delete=models.DO_NOTHING, null=True)
+    estado = models.CharField(max_length=20, choices=Estados.choices)
+
+    def __str__(self) -> str:
+        return f'{self.id}, {self.estado}'
 
 class Empresa(models.Model):
     razonSocial = models.CharField(max_length=50)
-    id_razonSocia = models.CharField(max_length=20)
+    id_razonSocial = models.CharField(max_length=20)
     impuestos = models.ManyToManyField(Impuesto)  ##relacion
     pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
     empleado = models.ManyToManyField(Empleado)
 
+    def __str__(self) -> str:
+        return self.razonSocial
+
 
 class Documento(models.Model):
-    id_empresa = models.ManyToManyField(Empresa)
-    id_proceso = models.ManyToManyField(Proceso)
+    id_empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
+    id_proceso = models.ForeignKey(Proceso, on_delete=models.CASCADE, null=True)
+    nombre = models.CharField(max_length=100, default='')
     documento_pdf = models.FileField(upload_to=document_pdf_file_path)
+
+    def __str__(self) -> str:
+        return f'{self.nombre}, {self.documento_pdf}'
