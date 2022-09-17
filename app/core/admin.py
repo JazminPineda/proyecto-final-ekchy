@@ -47,4 +47,8 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
-
+admin.site.register(models.Empresa)
+admin.site.register(models.Impuesto)
+admin.site.register(models.Empleado)
+admin.site.register(models.Proceso)
+admin.site.register(models.Documento)
