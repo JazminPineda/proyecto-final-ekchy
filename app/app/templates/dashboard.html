@@ -1,6 +1,37 @@
 {% extends "base.html" %}
 {% block body %}
 <div class="row">
+
+  <div class="col-sm">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Total Impuestos hasta hoy</h5>
+        <p class="card-text">45</p>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Total Impuestos Procesados del mes en curso</h5>
+       <p class="card-text">3</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Total Impuestos Pendientes del mes en curso</h5>
+
+        <p class="card-text">11</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row">
     <div class="col-6">
         <canvas id="grafico1" width="200" height="200"></canvas>
     </div>
@@ -17,5 +48,9 @@
         <canvas id="grafico4" width="200" height="200"></canvas>
     </div>
 </div>
+
+
+
+
 
 {% endblock %}
