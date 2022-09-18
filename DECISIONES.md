@@ -56,6 +56,8 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 * En el momento de hacer la subida en el pdf, no se podia obtener el identificador de la empresa, y era porque faltaba el campo <name> en el select del html.
 
+* No se estaba cargando la libreria chart.js y se tuvo que poner el bloque de javascript en el evento <document.addEventListener("DOMContentLoaded",() => {>
+
 
 ## Tareas
 1. Tabla de autenticación (No prioritatio)
