@@ -33,3 +33,9 @@ def pdf_upload(request):
         document.save()
         # print(file)
     return HttpResponse('Hello World!')
+
+def dashboard_view(request):
+    template = 'dashboard.html'
+    context = {}
+
+    return render(request, template, context)
