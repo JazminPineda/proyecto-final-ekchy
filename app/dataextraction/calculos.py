@@ -19,6 +19,20 @@ class GraficoPeriodoImpuesto():
                 grafico1[periodo] = 1
         return grafico1
 
+    def formato_data(self, grafico1):
+        imagen_uno = {}
+        for periodo, cantidad in grafico1.items():
+            imagen_uno[str(periodo)] = cantidad
+        return imagen_uno
+
+    def grafica_uno(self, imagen_uno):
+        data ={
+                'datasets': [{
+                    'label': 'Procesamiento de Impuestos por mes',
+                    'data': imagen_uno,
+                    }]
+            }
+        return data
 
 class GraficoEstadoImpuesto():
     def cantidadDocumentosProcesados(self, lista_procesadopdf):
@@ -33,6 +47,14 @@ class GraficoEstadoImpuesto():
                 grafico2[procesado] = 1
         return grafico2
 
+    def grafica_dos(self, grafico2):
+        data ={
+                'datasets': [{
+                    'label': 'Procesamiento de Impuestos por mes',
+                    'data': grafico2
+                }]
+                }
+        return data
 
 class GraficoEstadoMes():
     # Grafico 3
@@ -88,6 +110,32 @@ class GraficoEstadoMes():
             datos_grafico3.append(data)
 
         return datos_grafico3
+
+    def formato_data(self, datos_grafico3):
+        lista_grafica_tres =[]
+
+        for dicc in datos_grafico3: # recorro lista datasets
+
+            dataset = {}
+            for c, v  in dicc.items(): # recorre el dataset
+
+                if c == 'label':
+                    dataset[c] = v
+                if c == 'data': # partición
+                    dataset['data'] = v
+                    imagen_tres={}
+                    for periodo, cantidad in dicc[c].items():
+                        imagen_tres[str(periodo)] = cantidad
+                    dataset['data'] = imagen_tres
+
+            lista_grafica_tres.append(dataset)
+        return lista_grafica_tres
+
+    def grafica_tres(self, lista_grafica_tres):
+        data ={
+                'datasets': lista_grafica_tres
+                }
+        return data
 
 class GraficoRevisor_Estadoimpuesto():
 

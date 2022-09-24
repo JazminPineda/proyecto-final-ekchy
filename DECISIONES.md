@@ -20,7 +20,7 @@ Se crea tres archvos iniciales
 * pdfupload.html => se activa en el formulario una accion el cual se definió en <pdf-upload>
 * urls.py => se definen las rutas donde se ejecuta la función <pdf-upload>
 * views.py => son las vistas o donde se ejecuta la funcion lógica de cada vista, básicamente maneja las peticiones y respuestas, en esta parte es donde se empieza a llamar cada modulo de la clase.
-Cuando llama action el método, busca la filas e imprime el archivo.
+Cuando hace click en el boton para subir los archivos en el formulario se llama <action> definido. Que es una ruta de django para subir archivos.
 
 Nota: El proceso anterior se ejecuta cuando estan precargados en la base de datos de administración, como son datos generales de cliente, nombre de impuesto, pais. Con el ID que escoje el Usuario al cargar el pdf, se realiza comparacón, y ejecuta y guarda elproceso y el archivo (ambos procesos cambiando el esado "Iniciado" el documento interno).
 
@@ -59,7 +59,20 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 * No se estaba cargando la libreria chart.js y se tuvo que poner el bloque de javascript en el evento <document.addEventListener("DOMContentLoaded",() => {>
 
 
-## Tareas
+## Tareas Foco 23/09/2022
+
+* Crear metodos según estructura de grafica de los indicadores (j)
+* Crear una relación de extraccion y proceso (j)
+* Conectar la extracción
+    - ver si se puede hacer asincronico / o sincronico
+    - si es sincronico como manejar la espera?
+    - hacer que cuando se suba el pdf se ejecute la extracción
+    - Leer el pdf que se subió con la dirección de la BD
+    - Hacer guardado de la extracción
+
+* Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
+
+## Tareas no urgentes
 1. Tabla de autenticación (No prioritatio)
 2. Subir a una API (No prioritatio)
 3. Revision Docto helper.ipynb
@@ -68,17 +81,20 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 6. Indicadores definir y calcular ok
 7. Anotar decisiones que se han tomado (Iterativo)
 
-8. tabla con los valores del excel en DjangoCrear tables en excel (procesaiento excel <proceso>, <indicadores>,<resultaldos>(confirmar con  FOCO)
-*hacer una clase, modelo de Django de la tabla
-* y una clase que haga los cálculos
-
-9. Calcular indicadores manual en py (FOCO)
 
 
-10. buscar como subir múltiples PDF con Django y JavaScript
 
+
+
+
+
+# Hecho
 
 * Clase leer Excel y procesamiento excel ok
 * Ver librerias y graficos de py ok
+*tabla con los valores del excel en DjangoCrear tables en excel (procesaiento excel <proceso>, <indicadores>,<resultaldos>(confirmar con  FOCO)
+* buscar como subir múltiples PDF con Django y JavaScript
 
+* hacer una clase, modelo de Django de la tabla
+* y una clase que haga los cálculos
 
