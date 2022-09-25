@@ -37,7 +37,13 @@ def pdf_upload(request):
         document.save()
         process_pdf(proceso=proceso, document=document, empresa=empresa)
 
-    return HttpResponse('Hello World!')
+    empresas = Empresa.objects.all()
+    template = 'pdfupload.html'
+    context = {
+        "empresas": empresas,
+        "mensaje": "Se subieron y se procesaron los pdf correctamente"
+    }
+    return render(request, template, context)
 
 
 
