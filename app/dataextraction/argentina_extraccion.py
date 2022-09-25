@@ -89,19 +89,7 @@ class ExtraccionArgentina(Extraer):  # a#
 
         # puede ser otra posibilidad/ el tema es que cambia la palabra final
         # dic_renglones['Saldo de impuesto a favor de AFIP'][0]
-        # datos = Extraccion(
-        #     id_razonsocial = id_output,
-        #     nombre_empresa = nombre_output,
-        #     periodo_fiscal = period_outuput,
-        #     año = anio_output,
-        #     numeroFormulario = n_formulario_output,
-        #     n_verificacion = n_for_verifc,
-        #     saldoPagado = apagar_output,
-        #     saldoFavor= afavor_output,
-        #     nombreFormulario = nombre_formulario,
-        #     pais = Pais.ARGENTINA,
-        #     fecha_procesado = date.today(),
-        # )
+
         datos = (
             id_output,
             nombre_output,
@@ -117,6 +105,3 @@ class ExtraccionArgentina(Extraer):  # a#
         )
         return datos
 
-    def gardar_datos(self, process_id, datos):
-        # modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "ARG")
-        pass
