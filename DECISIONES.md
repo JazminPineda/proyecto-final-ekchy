@@ -59,10 +59,12 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 * No se estaba cargando la libreria chart.js y se tuvo que poner el bloque de javascript en el evento <document.addEventListener("DOMContentLoaded",() => {>
 
 
+
+
 ## Tareas Foco 23/09/2022
 
 * Crear metodos según estructura de grafica de los indicadores (j) ok Pendiente probar
-* Crear una relación de extraccion y proceso (j)
+* Crear una relación de extraccion y proceso (j) hacer relacion base de datos en proco en extraccion
 * Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
 * Revisar proceamiento excel, probrar django y creación tabla BD.
 
