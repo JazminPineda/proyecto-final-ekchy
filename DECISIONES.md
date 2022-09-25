@@ -61,16 +61,10 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 ## Tareas Foco 23/09/2022
 
-* Crear metodos según estructura de grafica de los indicadores (j)
+* Crear metodos según estructura de grafica de los indicadores (j) ok Pendiente probar
 * Crear una relación de extraccion y proceso (j)
-* Conectar la extracción
-    - ver si se puede hacer asincronico / o sincronico
-    - si es sincronico como manejar la espera?
-    - hacer que cuando se suba el pdf se ejecute la extracción
-    - Leer el pdf que se subió con la dirección de la BD
-    - Hacer guardado de la extracción
-
 * Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
+* Revisar proceamiento excel, probrar django y creación tabla BD.
 
 ## Tareas no urgentes
 1. Tabla de autenticación (No prioritatio)
@@ -89,6 +83,17 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 
 # Hecho
+
+
+25 de septiembre
+* Conectar la extracción
+    - es sincronico ok
+    - si es sincronico como manejar la espera? ok
+    - hacer que cuando se suba el pdf se ejecute la extracción ok
+    - Leer el pdf que se subió con la dirección de la BD ok
+    - Hacer guardado de la extracción ok
+
+atras del 24 de septiembre
 
 * Clase leer Excel y procesamiento excel ok
 * Ver librerias y graficos de py ok
