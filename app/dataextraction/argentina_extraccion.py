@@ -3,6 +3,7 @@ from posixpath import split
 import pdfplumber
 import re
 from datetime import date
+from decimal import *
 
 
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
@@ -81,26 +82,26 @@ class ExtraccionArgentina(Extraer):  # a#
         n_forconver = re.search(self.n_reguex, n_for_verfic[0])  # 4
         n_for_verifc = n_forconver.group(0).replace(" ", "")
 
-        apagar_output = lineas[43].split(" ")[7]
-        afavor_output = lineas[44].split(" ")[5]
+        split_apagar = lineas[43].split(" ")[7].split(',')
+        split_afavor = lineas[44].split(" ")[5].split(',')
+        apagar_output = Decimal(split_apagar[0].replace('.','') + '.' + split_apagar[1])
+        afavor_output = Decimal(split_afavor[0].replace('.','') + '.' + split_afavor[1])
 
         # puede ser otra posibilidad/ el tema es que cambia la palabra final
         # dic_renglones['Saldo de impuesto a favor de AFIP'][0]
-        datos = Extraccion(
-            id_razonsocial = id_output,
-            nombre_empresa = nombre_output,
-            periodo_fiscal = period_outuput,
-            año = anio_output,
-            numero_formulario = n_formulario_output,
-            n_verificacion = n_for_verifc,
-            saldo_pagado = apagar_output,
-            saldo_favor= afavor_output,
-            nombre_formulario = nombre_formulario,
-            pais = Pais.ARGENTINA,
-            fecha_procesado = date.today(),
+
+        datos = (
+            id_output,
+            nombre_output,
+            period_outuput,
+            anio_output,
+            n_formulario_output,
+            n_for_verifc,
+            apagar_output,
+            afavor_output,
+            nombre_formulario,
+            Pais.ARGENTINA,
+            date.today(),
         )
         return datos
 
-    def gardar_datos(self, process_id, datos):
-        # modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "ARG")
-        pass
