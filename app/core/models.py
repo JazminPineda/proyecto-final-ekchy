@@ -159,19 +159,21 @@ class Impuesto(models.Model):
 
 
 class Extraccion(models.Model):
-    id_razonsocial = models.CharField(max_length=10)
+    id_razonsocial = models.CharField(max_length=20)
     nombre_empresa = models.CharField(max_length=50)
     numero_formulario = models.CharField(max_length=6)
     nombre_formulario = models.CharField(max_length=15)
-    n_verificacion = models.IntegerField(null=False)
+    n_verificacion = models.CharField(max_length=40, null=False)
     periodo_fiscal = models.IntegerField(null=False)
     año = models.IntegerField(choices=OPCIONES_AÑO)
-    saldo_pagado = models.IntegerField(null=False)
-    saldo_favor = models.IntegerField(null=False)
+    saldo_pagado = models.DecimalField(null=False, decimal_places=2, max_digits=20)
+    saldo_favor = models.DecimalField(null=False, decimal_places=2, max_digits=20)
     pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
     fecha_procesado = models.DateField(auto_now=True)
     # documento_pdf = models.FileField(up)
 
+    def __str__(self) -> str:
+        return f'{self.id_razonsocial} {self.nombre_empresa} {self.n_verificacion}' + super().__str__()
 
 ## Tablas de procesos
 
@@ -181,6 +183,7 @@ class Proceso(models.Model):
         INICIADO = 'Iniciado'
         PROCESADO = 'Procesado'
         FINALIZADO = 'Finalizado'
+        FAllIDO = 'Fallido'
 
     id_extraccion = models.OneToOneField(Extraccion, on_delete=models.DO_NOTHING, null=True)
     estado = models.CharField(max_length=20, choices=Estados.choices)
@@ -204,6 +207,10 @@ class Documento(models.Model):
     id_proceso = models.ForeignKey(Proceso, on_delete=models.CASCADE, null=True)
     nombre = models.CharField(max_length=100, default='')
     documento_pdf = models.FileField(upload_to=document_pdf_file_path)
+
+    def delete(self,*args, **kargs):
+        self.documento_pdf.delete()
+        return super().delete(*args, **kargs)
 
     def __str__(self) -> str:
         return f'{self.nombre}, {self.documento_pdf}'

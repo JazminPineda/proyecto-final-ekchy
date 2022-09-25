@@ -89,6 +89,3 @@ class ExtraccionColombia(Extraer):  # a#
             nombre_output,
         )
         return datos
-
-    # def gardar_datos(self, process_id, datos):
-    #     modelo = Extraccion(id_razonsocial=datos[0], nombre_empresa= datos[1],  numeroFormulario = datos[4], nombreFormulario = datos[8], n_verificacion = datos[5], periodo_fiscal = datos[2], año = datos[3], saldoPagado = datos[6], saldoFavor = datos[7], grupo = "COL")

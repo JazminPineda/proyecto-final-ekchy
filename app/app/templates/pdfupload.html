@@ -23,7 +23,11 @@
         <button type="submit" class="btn btn-primary" accept=".pdf,application/pdf,application/x-pdf">Subir
             pdfs</button>
     </div>
-
+    {% if mensaje %}
+    <div class="col-12">
+        <p>{{mensaje}}</p>
+    </div>
+    {% endif %}
 </form>
 </div>
 {% endblock %}
