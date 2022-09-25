@@ -4,7 +4,7 @@ from core.models import Extraccion
 from dataextraction.argentina_extraccion import ExtraccionArgentina
 from collections import defaultdict
 import locale
-from core.models import VencimientoImpuesto, Mes, Año, Impuesto, Empresa, Empleado
+from core.models import VencimientoImpuesto, Impuesto, Empresa, Empleado
 
  # celdas = hoja['A1':'I13']
     # hoja.max_column
@@ -49,12 +49,12 @@ class ProcesamientoExcelTest():
             id_razonsocial = fila[1],
             nombre_empresa = fila[2],
             periodo_fiscal = fila[3],
-            nombreFormulario = fila[4],
-            fechaVencimiento = fila[5],
-            fechaEntrega = fila[6],
-            fechaRevisado = fila[7],
+            nombre_formulario = fila[4],
+            fecha_vencimiento = fila[5],
+            fecha_entrega = fila[6],
+            fecha_revisado = fila[7],
             review = fila[8],
-            proceso = fila[9],
+            # proceso = fila[9],
         )
 
         return excel_datos
