@@ -116,19 +116,19 @@ def datos_graficos():
                     'datasets':
                     [
                         {
-                            'axis': 'y',
+                            # 'axis': 'y',
                             'label': 'OK Procesado',
                              'data':  [6, 5, 6,3],
                              'backgroundColor': '#0d6efd',
                         },
                         {
-                            'axis': 'y',
+                            # 'axis': 'y',
                             'label': 'Pendiente',
                             'data': [ 3, 3, 3, 2],
                             'backgroundColor': '#20c997',
                         },
                         {
-                            'axis': 'y',
+                            # 'axis': 'y',
                             'label': 'No procesado',
                             'data': [ 1,1,6,1 ],
                             'backgroundColor': '#ffc107',

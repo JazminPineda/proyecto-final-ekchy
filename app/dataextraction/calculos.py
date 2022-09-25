@@ -186,6 +186,30 @@ class GraficoRevisor_Estadoimpuesto():
 
         return grafico_revisor
 
+    def formato_data(self, grafico_revisor):
+
+        labels =[]
+        datasets =[]
+        for dicc in grafico_revisor:
+            for clave, valor in dicc.items():
+                if clave == 'label':
+                    labels.append(dicc[clave])
+        estados = ['OK Procesado', 'Pendiente', 'No procesado']
+        for estado in estados:
+            data_chart = {'label': estado, 'data':[]}
+            for indice in range(len(grafico_revisor)):
+                data_chart['data'].append(grafico_revisor[indice]['data'][estado])
+            datasets.append(data_chart)
+
+        return (labels, datasets)
+
+    def grafica_cuatrl(self, labels, datasets):
+         data ={
+            'labels': labels,
+            'datasets': datasets
+         }
+         return data
+
 
 if __name__ == "django.core.management.commands.shell":
     ruta = "dataextraction/Recibos/Fechas_Indicadores.xlsx"

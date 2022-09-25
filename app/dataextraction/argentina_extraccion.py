@@ -29,6 +29,7 @@ class ExtraccionArgentina(Extraer):  # a#
     """Defino comportamientos y metodos para la clase, defino la estructura"""
 
     def extract_text(self, pdf) -> str:
+        """Se sobre escribe la función extract_text en la clase base"""
         pag = pdf.pages[0]
         return pag.extract_text()
 
