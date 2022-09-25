@@ -35,10 +35,14 @@ def pdf_upload(request):
     for file in files:
         proceso = Proceso.objects.create(estado=Proceso.Estados.INICIADO)
         proceso.save()
+        proceso.refresh_from_db()
         document = Documento.objects.create(id_empresa=empresa, id_proceso=proceso, nombre=file.name, documento_pdf=file)
         document.save()
 
-        process_pdf(proceso=proceso, document=document, empresa=empresa)
+        resultado  = process_pdf(proceso=proceso, document=document, empresa=empresa)
+        proceso.id_extraccion = resultado
+        proceso.estado = Proceso.Estados.PROCESADO
+        proceso.save()
 
     empresas = Empresa.objects.all()
     template = 'pdfupload.html'
@@ -76,8 +80,10 @@ def process_pdf(proceso:Proceso, document:Documento, empresa:Empresa):
         pais = Pais.ARGENTINA,
         fecha_procesado = date.today(),
     )
-    print(extraccion)
+
     extraccion.save()
+    extraccion.refresh_from_db()
+    return extraccion
 
 
 def dashboard_view(request):

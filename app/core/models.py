@@ -180,10 +180,11 @@ class Extraccion(models.Model):
 
 class Proceso(models.Model):
     class Estados(models.Choices):
-        INICIADO = 'Iniciado'
-        PROCESADO = 'Procesado'
-        FINALIZADO = 'Finalizado'
-        FAllIDO = 'Fallido'
+        INICIADO = 'Iniciado' # Sube el pdf
+        PROCESADO = 'Procesado' # Extraccion BD
+        FINALIZADO = 'Finalizado' # se compara con el excel y se guarda BD
+        FAllIDO = 'Fallido' # Falla en cualquier etapa
+
 
     id_extraccion = models.OneToOneField(Extraccion, on_delete=models.DO_NOTHING, null=True)
     estado = models.CharField(max_length=20, choices=Estados.choices)
