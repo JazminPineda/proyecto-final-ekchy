@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from app.views import index_view, pdf_upload_view, pdf_upload
+from app.views import index_view, pdf_upload_view, pdf_upload, dashboard_view, dashboard_API
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +24,6 @@ urlpatterns = [
     path('pdf-upload-view', pdf_upload_view),
     path('pdf-upload', pdf_upload),
     path('api/user/', include('user.urls')),
+    path("dashboard-view", dashboard_view),
+    path("dashboard-data", dashboard_API),
 ]

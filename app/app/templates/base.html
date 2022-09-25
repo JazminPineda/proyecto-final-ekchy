@@ -8,6 +8,78 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+    <script>
+            // Evento que se ejecuta cuando  se carga toda la pagina
+            document.addEventListener("DOMContentLoaded",() => {
+
+                $.getJSON("/dashboard-data", function( body ) { //hace la petición a django en la función calcular
+                    console.log(body)
+
+                    var canvasgrafico1 = document.getElementById('grafico1');
+                    const grafico1 = new Chart(canvasgrafico1, {
+                    type: 'bar',
+                    data: body.grafico1.data,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                    var canvasgrafico2 = document.getElementById('grafico2');
+                    const grafico2 = new Chart(canvasgrafico2, {
+                    type: 'line',
+                    data: body.grafico2.data,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+
+                    var canvasgrafico3 = document.getElementById('grafico3');
+
+                    const grafico3 = new Chart(canvasgrafico3, {
+                    type: 'bar',
+                    data: body.grafico3.data,
+                    options: {
+                        scales: {
+                            x: {
+                                stacked: true,
+                            },
+                            y: {
+                                stacked: true
+                            }
+                            }
+                    }
+                });
+
+                    var canvasgrafico4 = document.getElementById('grafico4');
+                    var grafico4 = new Chart(canvasgrafico4, {
+                    type: 'bar',
+                    data: body.grafico4.data,
+                    options: {
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                stacked: true
+                            },
+                            y: {
+                                stacked: true
+                            }
+                        }
+                    }
+                    });
+                });
+            });
+        </script>
 </head>
 
 
@@ -24,4 +96,6 @@
     integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
     crossorigin="anonymous"></script>
 
+
+</script>
 </html>
