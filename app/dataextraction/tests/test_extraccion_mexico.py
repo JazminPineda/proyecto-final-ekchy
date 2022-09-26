@@ -26,7 +26,7 @@ class TestMexicoExtraction(unittest.TestCase):
 
         extraccion = ExtraccionMexico()
         lineas = extraccion.procesamiento(self.texto)
-        resultado = extraccion.extraccion(lineas)
+        resultado = extraccion.extraccion(self.texto,lineas)
         n_formulario_output = resultado[4]
         self.assertEqual(len(resultado), 10)
         self.assertEqual(n_formulario_output, "001")

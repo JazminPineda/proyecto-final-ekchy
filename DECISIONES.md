@@ -61,10 +61,11 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 
 
-## Tareas Foco 23/09/2022
+## Tareas Foco 30/09/2022
 
+* Probar para cada pais como funciona la subida de cada pais. crear y subir pdfs (se tienen que revisar cosas porque cada uno funciona de manera diferente)
+* Subida de excel y hacer la comparación (pendiente definir tabla para guardar datos)
 * Crear metodos según estructura de grafica de los indicadores (j) ok Pendiente probar
-* Crear una relación de extraccion y proceso (j) hacer relacion base de datos en proco en extraccion
 * Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
 * Revisar proceamiento excel, probrar django y creación tabla BD.
 
@@ -94,6 +95,7 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
     - hacer que cuando se suba el pdf se ejecute la extracción ok
     - Leer el pdf que se subió con la dirección de la BD ok
     - Hacer guardado de la extracción ok
+* Crear una relación de extraccion y proceso (j) hacer relacion base de datos en proco en extraccion
 
 atras del 24 de septiembre
 

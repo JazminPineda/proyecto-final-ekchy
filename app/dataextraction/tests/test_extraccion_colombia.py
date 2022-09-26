@@ -28,7 +28,7 @@ class TestColombiaExtraction(unittest.TestCase):
         n_formulario_output = ""
         extraccion = ExtraccionColombia()
         diccionario = extraccion.procesamiento(self.texto)
-        resultado = extraccion.extraccion(self.texto, diccionario)
+        resultado = extraccion.extraccion(text=self.texto,lineas= diccionario)
         n_formulario_output = resultado[4]
         self.assertEqual(len(resultado), 9)
         self.assertEqual(n_formulario_output, "300")

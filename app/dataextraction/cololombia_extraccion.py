@@ -50,7 +50,7 @@ class ExtraccionColombia(Extraer):  # a#
 
         # print(categorias)
 
-    def extraccion(self, text, dic_renglones):
+    def extraccion(self, text, lineas):
 
         id_empresa = text.split("\n")[6]
         id_output = id_empresa.replace(" ", "")
@@ -71,8 +71,8 @@ class ExtraccionColombia(Extraer):  # a#
             nombre_output = "IVA"
         n_verificacion_output = text.split("\n")[3]
 
-        apagar_output = int(dic_renglones["Total saldo a pagar"].replace(",", ""))
-        afavor_output = int(dic_renglones["o Total saldo a favor"].replace(",", ""))
+        apagar_output = int(lineas["Total saldo a pagar"].replace(",", ""))
+        afavor_output = int(lineas["o Total saldo a favor"].replace(",", ""))
 
         # fecha_present = dic_renglones['982. CódFiigrmo aC o'].replace(",", "")
         # fecha_present = pag.extract_text()
