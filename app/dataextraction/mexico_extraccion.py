@@ -1,7 +1,9 @@
 from cgi import test
+from dataclasses import replace
 from posixpath import split
 import pdfplumber
 import re
+from decimal import *
 
 #  Es para la notación de cadena raw de Python para los patrones de Unicode (str)
 import locale
@@ -26,7 +28,8 @@ class ExtraccionMexico(Extraer):  # a#
     def procesamiento(self, text):
         return text.split("\n")
 
-    def extraccion(self, lineas):
+    def extraccion(self,text, lineas):
+        # print(lineas)
         id_empresa = lineas[1]
         id_output = id_empresa.split(" ")[1]
 
@@ -75,8 +78,8 @@ class ExtraccionMexico(Extraer):  # a#
         n_formulario = lineas[6].split(" ")
         n_verificacion_output = n_formulario[3]
 
-        apagar_output = lineas[14]
-        afavor_output = "0"
+        apagar_output = Decimal(lineas[14].replace(",", "") )
+        afavor_output =  Decimal(0)
 
         datos = (
             id_output,

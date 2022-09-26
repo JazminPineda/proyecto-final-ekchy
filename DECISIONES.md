@@ -61,10 +61,10 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 
 
-## Tareas Foco 23/09/2022
+## Tareas Foco 30/09/2022
 
-* Probar para cada pais como funciona la subida de cada pais. crear y subir pdfs
-* Subida de excel y hacer la comparación
+* Probar para cada pais como funciona la subida de cada pais. crear y subir pdfs (se tienen que revisar cosas porque cada uno funciona de manera diferente)
+* Subida de excel y hacer la comparación (pendiente definir tabla para guardar datos)
 * Crear metodos según estructura de grafica de los indicadores (j) ok Pendiente probar
 * Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
 * Revisar proceamiento excel, probrar django y creación tabla BD.

@@ -1,13 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import json
-from core.models import Empresa, Documento, Proceso, Pais, Extraccion
+from core.models import Empresa, Documento, Proceso, Pais, Extraccion, VencimientoImpuesto
 from dataextraction.argentina_extraccion import ExtraccionArgentina
 from dataextraction.cololombia_extraccion import ExtraccionColombia
 from dataextraction.mexico_extraccion import ExtraccionMexico
 import os
 from datetime import date
-
+from dataextraction.lectura_excel import ProcesamientoExcel #jaz
 
 def index_view(request):
     # return HttpResponse('Hello World!')
@@ -77,13 +77,55 @@ def process_pdf(proceso:Proceso, document:Documento, empresa:Empresa):
         saldo_pagado = datos[6],
         saldo_favor= datos[7],
         nombre_formulario = datos[8],
-        pais = Pais.ARGENTINA,
+        pais = empresa.pais,
         fecha_procesado = date.today(),
     )
 
     extraccion.save()
     extraccion.refresh_from_db()
     return extraccion
+
+
+## jaz xml
+
+def xml_upload_view(request):
+    template = 'xml_upload.html'
+    context = {
+        "empresas": []
+    }
+    return render(request, template, context)
+
+
+def xml_upload(request, extraccion):
+    # empresa_id = request.POST.getlist('empresa')[0]
+    files = request.FILES.getlist('files')
+    vencimiento = VencimientoImpuesto.Mes.get(mes= VencimientoImpuesto.Mes.SEPTIEMBRE) #seleccion mes actual o preestablecido
+
+    # for file in files:
+    proceso = Proceso.objects.create(estado=Proceso.Estados.INICIADO)
+    proceso.save()
+    proceso.refresh_from_db()
+    document = ProcesamientoExcel.objects.create(ruta=files)
+    document.save()
+
+    lista  = ProcesamientoExcel.lectura_xls(document,  Extraccion.extraccion)
+
+    xml_comparado = ProcesamientoExcel.validar_datos(lista, extraccion)
+
+    # proceso.id_extraccion = resultado
+    proceso.estado = Proceso.Estados.PROCESADO
+    proceso.save()
+
+    empresas = Empresa.objects.all()
+    template = 'xml_upload.html'
+    context = {
+        "empresas": empresas,
+        "mensaje": "Se subieron y se procesaron los pdf correctamente"
+    }
+    return render(request, template, context)
+
+
+## dashboard
 
 
 def dashboard_view(request):
