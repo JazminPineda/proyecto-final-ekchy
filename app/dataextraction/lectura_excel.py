@@ -42,12 +42,11 @@ class ProcesamientoExcel():
         for vencimiento in dato_xls:
             for proceso in procesos:
                 extraccion_pdf = Extraccion.objects.get(id=proceso.id_extraccion.id)
-                if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf) == True:
+                if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
                     vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.PROCESADO
                     print(resultados.append(vencimiento))
         for vencimiento in dato_xls:
-            if vencimiento not in resultados:
-                if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf) == False:
+            if vencimiento not in resultados and not ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
                     vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.NO_PROCESADO
                     print(resultados.append(vencimiento))
         return resultados
