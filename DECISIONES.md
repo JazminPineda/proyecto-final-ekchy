@@ -64,11 +64,13 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 ## Tareas Foco 30/09/2022
 
-* Probar para cada pais como funciona la subida de cada pais. crear y subir pdfs (se tienen que revisar cosas porque cada uno funciona de manera diferente)
-* Subida de excel y hacer la comparación (pendiente definir tabla para guardar datos)
+* Mejorar interfaz
+* construir excel donde se crea pdf extrac , modificar exel y crearlo sin visualizacion pero que quede en bd extract
+* que a partir de la generacion de los datos se grafique el excel
+* Probar que los datos ya estan cargados cuando se sube el excel.
 * Crear metodos según estructura de grafica de los indicadores (j) ok Pendiente probar
 * Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
-* Revisar proceamiento excel, probrar django y creación tabla BD.
+
 
 ## Tareas no urgentes
 1. Tabla de autenticación (No prioritatio)
@@ -87,7 +89,9 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 
 # Hecho
-
+* Revisar proceamiento excel, probrar django y creación tabla BD.
+* Subida de excel y hacer la comparación (pendiente definir tabla para guardar datos)
+* Probar para cada pais como funciona la subida de cada pais. crear y subir pdfs (se tienen que revisar cosas porque cada uno funciona de manera diferente)
 
 25 de septiembre
 * Conectar la extracción

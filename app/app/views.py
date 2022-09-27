@@ -107,22 +107,7 @@ def xml_upload(request):
     for resultado in resultados:
         # print(resultado)
         resultado.save()
-    # vencimiento = VencimientoImpuesto.Mes.get(mes= VencimientoImpuesto.Mes.SEPTIEMBRE) #seleccion mes actual o preestablecido
 
-    # # for file in files:
-    # proceso = Proceso.objects.create(estado=Proceso.Estados.INICIADO)
-    # proceso.save()
-    # proceso.refresh_from_db()
-    # document = ProcesamientoExcel.objects.create(ruta=files)
-    # document.save()
-
-    # lista  = ProcesamientoExcel.lectura_xls(document,  Extraccion.extraccion)
-
-    # xml_comparado = ProcesamientoExcel.validar_datos(lista, extraccion)
-
-    # # proceso.id_extraccion = resultado
-    # proceso.estado = Proceso.Estados.PROCESADO
-    # proceso.save()
 
     empresas = Empresa.objects.all()
     template = 'xml_upload.html'
