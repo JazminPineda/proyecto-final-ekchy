@@ -1,11 +1,12 @@
 # import pandas as pd
+from io import BytesIO
 import openpyxl #ediciones
 from core.models import Extraccion
 from dataextraction.argentina_extraccion import ExtraccionArgentina
 from collections import defaultdict
 import locale
 from core.models import VencimientoImpuesto, Impuesto, Empresa, Empleado
-
+from datetime import date, datetime
  # celdas = hoja['A1':'I13']
     # hoja.max_column
     # hoja.max_row
@@ -19,40 +20,53 @@ campos = ["periodo_fiscal", 'nombreFormulario', 'Fecha_vencimiento', 'Fecha_envi
 class ProcesamientoExcel():
 
     @classmethod
-    def lectura_xls(cls, ruta):
-        lectura_excel = openpyxl.load_workbook(filename=ruta, data_only=True)
+    def lectura_xls(cls, file):
+        # lectura_excel = openpyxl.load_workbook(filename=ruta, data_only=True)
+        lectura_excel = openpyxl.load_workbook(filename=BytesIO(file.read()))
         hoja = lectura_excel.active
         lista=[]
-        for fila in hoja.rows:
+        for fila in hoja.iter_rows(min_row=2, max_row = hoja.max_row):
             lista.append(ProcesamientoExcelTest.fila_dicc([celda.value  for celda in fila]))
         return lista
 
     @classmethod
     def comparo(cls, vencimiento, extrccion_pdf):
-        return vencimiento.id_razonsocial == extrccion_pdf.id_razonsocial
+        encontrado = str(vencimiento.id_razonsocial).replace("-","").upper().strip() == str(extrccion_pdf.id_razonsocial).replace("-","").upper().strip()
+        return encontrado
+
+
 
     @classmethod
-    def validar_datos(cls, dato_xls, extraccion_pdf):
+    def validar_datos(cls,procesos, dato_xls):
+        resultados = []
         for vencimiento in dato_xls:
-            if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
-                vencimiento.proceso  = 'ok procesado'
-            else:
-                vencimiento.proceso = 'pendiente'
-        return dato_xls
+            for proceso in procesos:
+                extraccion_pdf = Extraccion.objects.get(id=proceso.id_extraccion.id)
+                if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
+                    vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.PROCESADO
+                    print(resultados.append(vencimiento))
+        for vencimiento in dato_xls:
+            if vencimiento not in resultados and not ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
+                    vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.NO_PROCESADO
+                    print(resultados.append(vencimiento))
+        return resultados
 
 class ProcesamientoExcelTest():
 
     @classmethod
     def fila_dicc(cls, fila):
+        # print(type(fila[5]),fila[6], fila[7])
         excel_datos = VencimientoImpuesto(
             pais = fila[0],
             id_razonsocial = fila[1],
             nombre_empresa = fila[2],
             periodo_fiscal = fila[3],
-            nombre_formulario = fila[4],
-            fecha_vencimiento = fila[5],
-            fecha_entrega = fila[6],
-            fecha_revisado = fila[7],
+            nombre_formulario = fila[4].strip(),
+            año = fila[5].year,
+            mes = fila[5].month,
+            fecha_vencimiento = fila[5], # datetime.strptime(fila[5], '%d/%m/%Y'),
+            fecha_entrega = fila[6], # datetime.strptime(fila[6], '%d/%m/%Y'),
+            fecha_revisado = fila[7], # datetime.strptime(fila[7], '%d/%m/%Y'),
             review = fila[8],
             # proceso = fila[9],
         )
