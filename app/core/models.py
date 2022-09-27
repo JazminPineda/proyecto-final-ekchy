@@ -96,10 +96,10 @@ class Empleado(models.Model):
 
 
 class VencimientoImpuesto(models.Model):
-    OPCIONES_PROCESO = [
-        ("PROCESADO", "Procesado"),
-        ("NO PROCESADO", "No Procesado"),
-    ]
+    class EstadoVencimiento(models.Choices):
+        PROCESADO= "Procesado"
+        NO_PROCESADO= "No Procesado"
+
 
     class Mes(models.IntegerChoices):
         ENERO = 1
@@ -118,20 +118,21 @@ class VencimientoImpuesto(models.Model):
     pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
     mes = models.IntegerField(choices=Mes.choices, blank=False)  # Relación clase mes
     año = models.IntegerField(choices=OPCIONES_AÑO, blank=False)
-    nombre = models.CharField(max_length=20)
-    id_razonsocial = models.CharField(max_length=20)  # se añade
-    nombre_empresa = models.CharField(max_length=20)  # se añade
+    #nombre = models.CharField(max_length=20)
+    id_razonsocial = models.CharField(max_length=30)  # se añade
+    nombre_empresa = models.CharField(max_length=50)  # se añade
     periodo_fiscal = models.CharField(max_length=20)  # se añade
-    cliente = models.CharField(max_length=50)
-    taxId = models.CharField(max_length=5, null=False)
+    #cliente = models.CharField(max_length=50)
+    #taxId = models.CharField(max_length=5, null=False)
     nombre_formulario = models.CharField(max_length=20)
     fecha_vencimiento = models.DateTimeField(null=False)
     fecha_entrega = models.DateTimeField(null=False)
     fecha_revisado = models.DateTimeField(null=False)
     review = models.CharField(max_length=60)
-    proceso = models.CharField(max_length=20, choices=OPCIONES_PROCESO, blank=False)
+    proceso = models.CharField(max_length=50, choices=EstadoVencimiento.choices, blank=False)
 
-
+    def __str__(self):
+        return f'{self.pais} | {self.id_razonsocial} | {self.nombre_empresa} | {self.periodo_fiscal} | {self.nombre_formulario} | {self.fecha_vencimiento} | {self.proceso}'
 # class Responsabilidad(models.Model):
 #     cargo = models.CharField(max_length=10, choices=OPCIONES_RESPOSABILIDADES, blank=False)
 

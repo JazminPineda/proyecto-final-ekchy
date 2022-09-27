@@ -59,6 +59,7 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 * No se estaba cargando la libreria chart.js y se tuvo que poner el bloque de javascript en el evento <document.addEventListener("DOMContentLoaded",() => {>
 
 
+* Empezar a conectar cada modulo en la interfaz(web) y la Base Datos y los distintos módulos para que funcione como es esperado.
 
 
 ## Tareas Foco 30/09/2022

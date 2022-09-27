@@ -96,25 +96,36 @@ def xml_upload_view(request):
     return render(request, template, context)
 
 
-def xml_upload(request, extraccion):
+def xml_upload(request):
     # empresa_id = request.POST.getlist('empresa')[0]
-    files = request.FILES.getlist('files')
-    vencimiento = VencimientoImpuesto.Mes.get(mes= VencimientoImpuesto.Mes.SEPTIEMBRE) #seleccion mes actual o preestablecido
+    files = request.FILES.getlist('files')[0]
+    # print(dir(files))
+    lista = ProcesamientoExcel.lectura_xls(files)
+    # print(lista)
+    procesos = Proceso.objects.all().filter(estado= Proceso.Estados.PROCESADO)
+    for proceso in procesos:
+        extraccion = Extraccion.objects.get(id=proceso.id_extraccion.id)
+        # print(extraccion)
+        resultados = ProcesamientoExcel.validar_datos(lista,extraccion)
+    for resultado in resultados:
+        # print(resultado)
+        resultado.save()
+    # vencimiento = VencimientoImpuesto.Mes.get(mes= VencimientoImpuesto.Mes.SEPTIEMBRE) #seleccion mes actual o preestablecido
 
-    # for file in files:
-    proceso = Proceso.objects.create(estado=Proceso.Estados.INICIADO)
-    proceso.save()
-    proceso.refresh_from_db()
-    document = ProcesamientoExcel.objects.create(ruta=files)
-    document.save()
+    # # for file in files:
+    # proceso = Proceso.objects.create(estado=Proceso.Estados.INICIADO)
+    # proceso.save()
+    # proceso.refresh_from_db()
+    # document = ProcesamientoExcel.objects.create(ruta=files)
+    # document.save()
 
-    lista  = ProcesamientoExcel.lectura_xls(document,  Extraccion.extraccion)
+    # lista  = ProcesamientoExcel.lectura_xls(document,  Extraccion.extraccion)
 
-    xml_comparado = ProcesamientoExcel.validar_datos(lista, extraccion)
+    # xml_comparado = ProcesamientoExcel.validar_datos(lista, extraccion)
 
-    # proceso.id_extraccion = resultado
-    proceso.estado = Proceso.Estados.PROCESADO
-    proceso.save()
+    # # proceso.id_extraccion = resultado
+    # proceso.estado = Proceso.Estados.PROCESADO
+    # proceso.save()
 
     empresas = Empresa.objects.all()
     template = 'xml_upload.html'
