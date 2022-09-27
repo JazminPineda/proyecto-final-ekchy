@@ -31,16 +31,26 @@ class ProcesamientoExcel():
 
     @classmethod
     def comparo(cls, vencimiento, extrccion_pdf):
-        return vencimiento.id_razonsocial == extrccion_pdf.id_razonsocial
+        encontrado = str(vencimiento.id_razonsocial).replace("-","").upper().strip() == str(extrccion_pdf.id_razonsocial).replace("-","").upper().strip()
+        return encontrado
+
+
 
     @classmethod
-    def validar_datos(cls, dato_xls, extraccion_pdf):
+    def validar_datos(cls,procesos, dato_xls):
+        resultados = []
         for vencimiento in dato_xls:
-            if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
-                vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.PROCESADO
-            else:
-                vencimiento.proceso = VencimientoImpuesto.EstadoVencimiento.NO_PROCESADO
-        return dato_xls
+            for proceso in procesos:
+                extraccion_pdf = Extraccion.objects.get(id=proceso.id_extraccion.id)
+                if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf) == True:
+                    vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.PROCESADO
+                    print(resultados.append(vencimiento))
+        for vencimiento in dato_xls:
+            if vencimiento not in resultados:
+                if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf) == False:
+                    vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.NO_PROCESADO
+                    print(resultados.append(vencimiento))
+        return resultados
 
 class ProcesamientoExcelTest():
 

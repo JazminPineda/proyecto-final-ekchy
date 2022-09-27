@@ -103,10 +103,7 @@ def xml_upload(request):
     lista = ProcesamientoExcel.lectura_xls(files)
     # print(lista)
     procesos = Proceso.objects.all().filter(estado= Proceso.Estados.PROCESADO)
-    for proceso in procesos:
-        extraccion = Extraccion.objects.get(id=proceso.id_extraccion.id)
-        # print(extraccion)
-        resultados = ProcesamientoExcel.validar_datos(lista,extraccion)
+    resultados = ProcesamientoExcel.validar_datos(procesos, lista)
     for resultado in resultados:
         # print(resultado)
         resultado.save()
