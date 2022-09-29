@@ -8,6 +8,9 @@ from dataextraction.mexico_extraccion import ExtraccionMexico
 import os
 from datetime import date
 from dataextraction.lectura_excel import ProcesamientoExcel #jaz
+from io import BytesIO
+import openpyxl #ediciones
+
 
 def index_view(request):
     # return HttpResponse('Hello World!')
@@ -86,7 +89,7 @@ def process_pdf(proceso:Proceso, document:Documento, empresa:Empresa):
     return extraccion
 
 
-## jaz xml
+## Subida xml fecha de vencimientos
 
 def xml_upload_view(request):
     template = 'xml_upload.html'
@@ -114,6 +117,53 @@ def xml_upload(request):
     context = {
         "empresas": empresas,
         "mensaje": "Se subieron y se procesaron los pdf correctamente"
+    }
+    return render(request, template, context)
+
+
+
+## Subida xml de "Pdfs periodos anteriores"
+def xml_upload_period_view(request):
+    template = 'xml-upload-periodos.html'
+    context = {
+        "carga": []
+    }
+    return render(request, template, context)
+
+
+def xml_upload_period(request):
+    files = request.FILES.getlist('files')[0]
+    lectura_excel = openpyxl.load_workbook(filename=BytesIO(files.read()))
+    hoja = lectura_excel.active
+
+    for fila in hoja.iter_rows(min_row=2, max_row = hoja.max_row):
+            proceso = Proceso.objects.create()
+            proceso.estado = Proceso.Estados.INICIADO
+            proceso.save()
+            proceso.refresh_from_db()
+            extraccion = Extraccion(
+                id_razonsocial = fila[0].value,
+                nombre_empresa = fila[1].value,
+                periodo_fiscal = fila[2].value,
+                año = fila[3].value,
+                numero_formulario = fila[4].value,
+                n_verificacion = fila[5].value,
+                saldo_pagado = fila[6].value,
+                saldo_favor= fila[7].value,
+                nombre_formulario = fila[8].value,
+                pais = fila[9].value,
+                fecha_procesado = fila[10].value,
+                proceso = proceso,
+            )
+
+            extraccion.save()
+            extraccion.refresh_from_db()
+            proceso.id_extraccion = extraccion
+            proceso.estado = Proceso.Estados.FINALIZADO
+            proceso.save()
+    template = 'xml-upload-periodos.html'
+    context = {
+        "carga": []
     }
     return render(request, template, context)
 
