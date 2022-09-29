@@ -65,6 +65,7 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 ## Tareas Foco 30/09/2022
 
 * Mejorar interfaz
+* crear usuario y contraseña cuando este en esa vista de subida información
 * construir excel donde se crea pdf extrac , modificar exel y crearlo sin visualizacion pero que quede en bd extract
 * que a partir de la generacion de los datos se grafique el excel
 * Probar que los datos ya estan cargados cuando se sube el excel.

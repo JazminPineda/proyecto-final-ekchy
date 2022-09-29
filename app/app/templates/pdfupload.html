@@ -8,7 +8,7 @@
 </div>
 <form class="row g-3" action="/pdf-upload" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <select name="empresa" class="list-group-item list-group-item-action list-group-item-danger" aria-label="Default select example">
+    <select name="empresa" class="form-select-lg bg-danger bg-opacity-25" aria-label="Default select example">
         <option selected>Elija una empresa</option>
         {% for empresa in empresas %}
 
