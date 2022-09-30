@@ -19,7 +19,7 @@ from app.views import index_view, pdf_upload_view, pdf_upload, xml_upload_view, 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index_view),
+    path('index.html', index_view),
     path('pdf-upload-view', pdf_upload_view),
     path('pdf-upload', pdf_upload),
     path('api/user/', include('user.urls')),
