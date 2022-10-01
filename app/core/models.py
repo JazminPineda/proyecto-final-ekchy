@@ -1,3 +1,4 @@
+from email.policy import default
 import os
 import uuid
 from statistics import mode
@@ -116,18 +117,18 @@ class VencimientoImpuesto(models.Model):
         DICIEMBRE = 12
 
     pais = models.CharField(max_length=3, choices=Pais.choices, blank=False)
-    mes = models.IntegerField(choices=Mes.choices, blank=False)  # Relación clase mes
+    mes = models.IntegerField(choices=Mes.choices, blank=True)  # Relación clase mes
     año = models.IntegerField(choices=OPCIONES_AÑO, blank=False)
     #nombre = models.CharField(max_length=20)
     id_razonsocial = models.CharField(max_length=30)  # se añade
-    nombre_empresa = models.CharField(max_length=50)  # se añade
+    nombre_empresa = models.CharField(max_length=50, default="")  # se añade
     periodo_fiscal = models.CharField(max_length=20)  # se añade
     #cliente = models.CharField(max_length=50)
     #taxId = models.CharField(max_length=5, null=False)
     nombre_formulario = models.CharField(max_length=20)
-    fecha_vencimiento = models.DateTimeField(null=False)
-    fecha_entrega = models.DateTimeField(null=False)
-    fecha_revisado = models.DateTimeField(null=False)
+    fecha_vencimiento = models.DateTimeField(null=True)
+    fecha_entrega = models.DateTimeField(null=True)
+    fecha_revisado = models.DateTimeField(null=True)
     review = models.CharField(max_length=60)
     proceso = models.CharField(max_length=50, choices=EstadoVencimiento.choices, blank=False)
 
@@ -182,7 +183,7 @@ class Extraccion(models.Model):
 class Proceso(models.Model):
     class Estados(models.Choices):
         INICIADO = 'Iniciado' # Sube el pdf
-        PROCESADO = 'Procesado' # Extraccion BD
+        PROCESADO = 'Procesado' # Extraccion BD PDF
         FINALIZADO = 'Finalizado' # se compara con el excel y se guarda BD
         FAllIDO = 'Fallido' # Falla en cualquier etapa
 

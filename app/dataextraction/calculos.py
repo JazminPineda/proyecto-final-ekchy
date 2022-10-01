@@ -11,7 +11,7 @@ class GraficoPeriodoImpuesto():
         grafico1={}
         for dicc in lista_extraccExcel:#lista diccionarios
             # lista de tipo diccionario
-            periodo =  datetime.strptime(dicc['Fecha_vencimiento'], "%d/%m/%Y").month
+            periodo =  dicc['periodo_fiscal']+1
             if periodo in grafico1.keys():#esta en el dicc
 
                 grafico1[periodo] = grafico1[periodo] + 1

@@ -5,6 +5,7 @@ from core.models import Empresa, Documento, Proceso, Pais, Extraccion, Vencimien
 from dataextraction.argentina_extraccion import ExtraccionArgentina
 from dataextraction.cololombia_extraccion import ExtraccionColombia
 from dataextraction.mexico_extraccion import ExtraccionMexico
+from dataextraction.calculos import GraficoPeriodoImpuesto
 import os
 from datetime import date
 from dataextraction.lectura_excel import ProcesamientoExcel #jaz
@@ -137,30 +138,21 @@ def xml_upload_period(request):
     hoja = lectura_excel.active
 
     for fila in hoja.iter_rows(min_row=2, max_row = hoja.max_row):
-            proceso = Proceso.objects.create()
-            proceso.estado = Proceso.Estados.INICIADO
-            proceso.save()
-            proceso.refresh_from_db()
-            extraccion = Extraccion(
+
+            extraccion = VencimientoImpuesto(
                 id_razonsocial = fila[0].value,
                 nombre_empresa = fila[1].value,
                 periodo_fiscal = fila[2].value,
                 año = fila[3].value,
-                numero_formulario = fila[4].value,
-                n_verificacion = fila[5].value,
-                saldo_pagado = fila[6].value,
-                saldo_favor= fila[7].value,
+                mes = fila[2].value +1,
                 nombre_formulario = fila[8].value,
-                pais = fila[9].value,
-                fecha_procesado = fila[10].value,
-                proceso = proceso,
+                pais = Pais[fila[9].value.upper()],
+                fecha_vencimiento = fila[10].value,
+                review = fila[11].value,
+                proceso = fila[12].value
             )
 
             extraccion.save()
-            extraccion.refresh_from_db()
-            proceso.id_extraccion = extraccion
-            proceso.estado = Proceso.Estados.FINALIZADO
-            proceso.save()
     template = 'xml-upload-periodos.html'
     context = {
         "carga": []
@@ -172,6 +164,7 @@ def xml_upload_period(request):
 
 
 def dashboard_view(request):
+    """Devuelve html vista """
     template = 'dashboard.html'
     context = {}
 
@@ -179,10 +172,27 @@ def dashboard_view(request):
 
 
 def dashboard_API(request):
+    """Devuelve los datos de la BD"""
     context = datos_graficos()
+    datos_procesamiento_graficos()
     return HttpResponse(json.dumps(context), content_type="application/json")
 
+
+
+def datos_procesamiento_graficos():
+    grafico = GraficoPeriodoImpuesto()
+    procesos = Proceso.objects.all().filter(estado = Proceso.Estados.PROCESADO)
+    # for proceso in procesos:
+    #     extraccion = Extraccion.objects.get(id= proceso.id_extraccion)
+    extracciones = [proceso.id_extraccion.__dict__ for proceso in procesos]
+    # vencimientos = [vencimiento.__dict__ for vencimiento in procesos]
+    print(extracciones)
+    periodos = grafico.cantidadImpuesto(extracciones)
+    print(periodos)
+
+
 def datos_graficos():
+
     return {
         'grafico1':{
             'data':{
