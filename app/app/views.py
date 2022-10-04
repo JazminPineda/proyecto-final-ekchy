@@ -174,22 +174,30 @@ def dashboard_view(request):
 def dashboard_API(request):
     """Devuelve los datos de la BD"""
     context = datos_graficos()
-    datos_procesamiento_graficos()
+
+
+    vencimientos_dic = consultar_vencimientos()
+    grafico1 = construir_datos_grafico1(vencimientos_dic)
+    # grafico2 = construir_datos_grafico2(vencimientos_dic)
+    # grafico3 = construir_datos_grafico3(vencimientos_dic)
+
+    context['grafico1']['data']['datasets'][0]['data'] = grafico1
+    # context['grafico2']['data']['datasets'][0]['data'] = grafico2
+    # context['grafico3']['data']['datasets'][0]['data'] = grafico3
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 
+def consultar_vencimientos():
+    vencimientos = VencimientoImpuesto.objects.all()
+    vencimientos_dic = [vencimiento.__dict__ for vencimiento in vencimientos]
+    return vencimientos_dic
 
-def datos_procesamiento_graficos():
+
+def construir_datos_grafico1(vencimientos_dic):
     grafico = GraficoPeriodoImpuesto()
-    procesos = Proceso.objects.all().filter(estado = Proceso.Estados.PROCESADO)
-    # for proceso in procesos:
-    #     extraccion = Extraccion.objects.get(id= proceso.id_extraccion)
-    extracciones = [proceso.id_extraccion.__dict__ for proceso in procesos]
-    # vencimientos = [vencimiento.__dict__ for vencimiento in procesos]
-    print(extracciones)
-    periodos = grafico.cantidadImpuesto(extracciones)
-    print(periodos)
-
+    grafico1 = grafico.cantidadImpuesto(vencimientos_dic)
+    imagen_uno = grafico.formato_data(grafico1)
+    return imagen_uno
 
 def datos_graficos():
 

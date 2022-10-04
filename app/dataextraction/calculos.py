@@ -11,9 +11,8 @@ class GraficoPeriodoImpuesto():
         grafico1={}
         for dicc in lista_extraccExcel:#lista diccionarios
             # lista de tipo diccionario
-            periodo =  dicc['periodo_fiscal']+1
+            periodo =  dicc['periodo_fiscal']
             if periodo in grafico1.keys():#esta en el dicc
-
                 grafico1[periodo] = grafico1[periodo] + 1
             else:
                 grafico1[periodo] = 1
@@ -22,7 +21,7 @@ class GraficoPeriodoImpuesto():
     def formato_data(self, grafico1):
         imagen_uno = {}
         for periodo, cantidad in grafico1.items():
-            imagen_uno[str(periodo)] = cantidad
+            imagen_uno[int(periodo)+1] = cantidad
         return imagen_uno
 
     def grafica_uno(self, imagen_uno):
