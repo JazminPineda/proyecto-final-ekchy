@@ -24,14 +24,14 @@ class GraficoPeriodoImpuesto():
             imagen_uno[int(periodo)+1] = cantidad
         return imagen_uno
 
-    def grafica_uno(self, imagen_uno):
-        data ={
-                'datasets': [{
-                    'label': 'Procesamiento de Impuestos por mes',
-                    'data': imagen_uno,
-                    }]
-            }
-        return data
+    # def grafica_uno(self, imagen_uno):
+    #     data ={
+    #             'datasets': [{
+    #                 'label': 'Procesamiento de Impuestos por mes',
+    #                 'data': imagen_uno,
+    #                 }]
+    #         }
+    #     return data
 
 class GraficoEstadoImpuesto():
     def cantidadDocumentosProcesados(self, lista_procesadopdf):
@@ -39,21 +39,22 @@ class GraficoEstadoImpuesto():
         grafico2={} # {"Correccion":3, "No Procesado":4, "Ok Procesado":26}
 
         for dicc1 in lista_procesadopdf:
-            procesado = dicc1['Procesado']
+            print(dicc1)
+            procesado = dicc1['proceso']
             if procesado in grafico2.keys():
                 grafico2[procesado] = grafico2[procesado] + 1
             else:
                 grafico2[procesado] = 1
         return grafico2
 
-    def grafica_dos(self, grafico2):
-        data ={
-                'datasets': [{
-                    'label': 'Procesamiento de Impuestos por mes',
-                    'data': grafico2
-                }]
-                }
-        return data
+    # def grafica_dos(self, grafico2):
+    #     data ={
+    #             'datasets': [{
+    #                 'label': 'Procesamiento de Impuestos por mes',
+    #                 'data': grafico2
+    #             }]
+    #             }
+    #     return data
 
 class GraficoEstadoMes():
     # Grafico 3
@@ -66,28 +67,31 @@ class GraficoEstadoMes():
             # lista de tipo diccionario
             periodo = dicc['periodo_fiscal']
             id = dicc['id_razonsocial']
-            mes =  datetime.strptime(dicc['Fecha_vencimiento'], "%d/%m/%Y").month
-            year =  datetime.strptime(dicc['Fecha_vencimiento'], "%d/%m/%Y").year
+            print(dicc['fecha_vencimiento'])
+            mes = dicc['fecha_vencimiento'].month
+            year =  dicc['fecha_vencimiento'].year
             if (id,periodo, year) not in datos.keys():
                 datos[(id,periodo,year)] = {} #se crea clave para ambas listas
             if mes in datos[(id,periodo,year)].keys():#esta en el dicc
                 datos[(id,periodo, year)][mes] = datos[(id,periodo, year)][mes] + 1
             else:
                 datos[(id,periodo, year)][mes] = 1
+
         return datos
 
 
-    def datos_pdf(self, lista_procesadopdf): ##revisar como se guarda año
+    def procesamiento_mes(self, lista_procesadopdf): ##revisar como se guarda año
         datos_pdf = {}
         for dicc_pdf in lista_procesadopdf:
             periodo = dicc_pdf['periodo_fiscal']
             id = dicc_pdf['id_razonsocial']
-            year = dicc_pdf['a–o'] #ojo toca ver como leer "ñ"
-            estado = dicc_pdf['Procesado']
+            year = dicc_pdf['año'] #ojo toca ver como leer "ñ"
+            estado = dicc_pdf['proceso']
             if estado not in datos_pdf:
                 datos_pdf[estado] = [(id,periodo,year)] #se crea clave para ambas listas
             elif (id,periodo,year) not in datos_pdf[estado]:
                 datos_pdf[estado].append((id,periodo,year))
+        print(datos_pdf)
         return datos_pdf
 
 

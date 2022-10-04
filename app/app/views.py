@@ -5,7 +5,7 @@ from core.models import Empresa, Documento, Proceso, Pais, Extraccion, Vencimien
 from dataextraction.argentina_extraccion import ExtraccionArgentina
 from dataextraction.cololombia_extraccion import ExtraccionColombia
 from dataextraction.mexico_extraccion import ExtraccionMexico
-from dataextraction.calculos import GraficoPeriodoImpuesto
+from dataextraction.calculos import GraficoPeriodoImpuesto, GraficoEstadoImpuesto, GraficoEstadoMes, GraficoRevisor_Estadoimpuesto
 import os
 from datetime import date
 from dataextraction.lectura_excel import ProcesamientoExcel #jaz
@@ -174,16 +174,14 @@ def dashboard_view(request):
 def dashboard_API(request):
     """Devuelve los datos de la BD"""
     context = datos_graficos()
-
-
     vencimientos_dic = consultar_vencimientos()
     grafico1 = construir_datos_grafico1(vencimientos_dic)
-    # grafico2 = construir_datos_grafico2(vencimientos_dic)
-    # grafico3 = construir_datos_grafico3(vencimientos_dic)
+    grafico2 = construir_datos_grafico2(vencimientos_dic)
+    grafico3 = construir_datos_grafico3(vencimientos_dic)
 
     context['grafico1']['data']['datasets'][0]['data'] = grafico1
-    # context['grafico2']['data']['datasets'][0]['data'] = grafico2
-    # context['grafico3']['data']['datasets'][0]['data'] = grafico3
+    context['grafico2']['data']['datasets'][0]['data'] = grafico2
+    context['grafico3']['data']['datasets'] = grafico3
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 
@@ -198,6 +196,21 @@ def construir_datos_grafico1(vencimientos_dic):
     grafico1 = grafico.cantidadImpuesto(vencimientos_dic)
     imagen_uno = grafico.formato_data(grafico1)
     return imagen_uno
+
+def construir_datos_grafico2(vencimientos_dic):
+    grafico = GraficoEstadoImpuesto()
+    grafico2 = grafico.cantidadDocumentosProcesados(vencimientos_dic)
+    return grafico2
+
+def construir_datos_grafico3(vencimientos_dic):
+    grafico = GraficoEstadoMes()
+    formato_grafico = grafico.datos_xls(vencimientos_dic)
+    grafico3 = grafico.procesamiento_mes(vencimientos_dic)
+    imagen_tres = grafico.union_datos(formato_grafico, grafico3)
+    imagen_tres[0]['backgroundColor'] =  'rgba(54, 162, 235, 0.2)'
+    imagen_tres[1]['backgroundColor'] =  'rgba(255, 99, 132, 0.2)'
+    imagen_tres[2]['backgroundColor'] =  'rgba(75, 192, 192, 0.2)'
+    return imagen_tres
 
 def datos_graficos():
 
