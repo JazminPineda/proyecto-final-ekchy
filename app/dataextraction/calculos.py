@@ -39,7 +39,6 @@ class GraficoEstadoImpuesto():
         grafico2={} # {"Correccion":3, "No Procesado":4, "Ok Procesado":26}
 
         for dicc1 in lista_procesadopdf:
-            print(dicc1)
             procesado = dicc1['proceso']
             if procesado in grafico2.keys():
                 grafico2[procesado] = grafico2[procesado] + 1
@@ -67,7 +66,7 @@ class GraficoEstadoMes():
             # lista de tipo diccionario
             periodo = dicc['periodo_fiscal']
             id = dicc['id_razonsocial']
-            print(dicc['fecha_vencimiento'])
+
             mes = dicc['fecha_vencimiento'].month
             year =  dicc['fecha_vencimiento'].year
             if (id,periodo, year) not in datos.keys():
@@ -91,7 +90,7 @@ class GraficoEstadoMes():
                 datos_pdf[estado] = [(id,periodo,year)] #se crea clave para ambas listas
             elif (id,periodo,year) not in datos_pdf[estado]:
                 datos_pdf[estado].append((id,periodo,year))
-        print(datos_pdf)
+
         return datos_pdf
 
 
@@ -105,7 +104,6 @@ class GraficoEstadoMes():
                 if clave_excel in datos.keys():
 
                     mes, cantidad = list(zip(datos[clave_excel].keys(), datos[clave_excel].values()))[0]
-                    # print(datos[clave_excel], mes, cantidad)
                     if mes not in data['data'].keys():
                         data['data'][mes] = cantidad
                     elif mes in data['data'].keys():
@@ -146,10 +144,10 @@ class GraficoRevisor_Estadoimpuesto():
         datos_revisor ={} ## Se utilizó para el grafico de revisores
 
         for fila in lista_extraccExcel:
-            nombre_revisor = fila['Revisor']
+            nombre_revisor = fila['review']
             id = fila['id_razonsocial']
             periodo = fila['periodo_fiscal']
-            year =  datetime.strptime(fila['Fecha_vencimiento'], "%d/%m/%Y").year
+            year =  fila['fecha_vencimiento'].year
 
             if  nombre_revisor not in  datos_revisor.keys():
                 datos_revisor[nombre_revisor] = [(id,periodo, year)]
@@ -162,8 +160,8 @@ class GraficoRevisor_Estadoimpuesto():
         for dicc_pdf in lista_procesadopdf:
             periodo = dicc_pdf['periodo_fiscal']
             id = dicc_pdf['id_razonsocial']
-            year = dicc_pdf['a–o'] #ojo toca ver como leer "ñ"
-            estado = dicc_pdf['Procesado']
+            year = dicc_pdf['año'] #ojo toca ver como leer "ñ"
+            estado = dicc_pdf['proceso']
             if estado not in datos_pdf:
                 datos_pdf[estado] = [(id,periodo,year)] #se crea clave para ambas listas
             elif (id,periodo,year) not in datos_pdf[estado]:
@@ -186,7 +184,6 @@ class GraficoRevisor_Estadoimpuesto():
                             data['data'][clave_estado] = data['data'][clave_estado] + 1
             grafico_revisor.append(data)
 
-
         return grafico_revisor
 
     def formato_data(self, grafico_revisor):
@@ -197,11 +194,12 @@ class GraficoRevisor_Estadoimpuesto():
             for clave, valor in dicc.items():
                 if clave == 'label':
                     labels.append(dicc[clave])
-        estados = ['OK Procesado', 'Pendiente', 'No procesado']
+        estados = ['Procesado', 'Pendiente', 'No Procesado']
         for estado in estados:
             data_chart = {'label': estado, 'data':[]}
             for indice in range(len(grafico_revisor)):
-                data_chart['data'].append(grafico_revisor[indice]['data'][estado])
+                if estado in grafico_revisor[indice]['data'].keys():
+                    data_chart['data'].append(grafico_revisor[indice]['data'][estado])
             datasets.append(data_chart)
 
         return (labels, datasets)

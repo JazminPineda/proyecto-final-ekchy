@@ -103,13 +103,10 @@ def xml_upload_view(request):
 def xml_upload(request):
     # empresa_id = request.POST.getlist('empresa')[0]
     files = request.FILES.getlist('files')[0]
-    # print(dir(files))
     lista = ProcesamientoExcel.lectura_xls(files)
-    # print(lista)
     procesos = Proceso.objects.all().filter(estado= Proceso.Estados.PROCESADO)
     resultados = ProcesamientoExcel.validar_datos(procesos, lista)
     for resultado in resultados:
-        # print(resultado)
         resultado.save()
 
 
@@ -178,10 +175,14 @@ def dashboard_API(request):
     grafico1 = construir_datos_grafico1(vencimientos_dic)
     grafico2 = construir_datos_grafico2(vencimientos_dic)
     grafico3 = construir_datos_grafico3(vencimientos_dic)
+    grafico4 = construir_datos_grafico4(vencimientos_dic)
 
     context['grafico1']['data']['datasets'][0]['data'] = grafico1
     context['grafico2']['data']['datasets'][0]['data'] = grafico2
+    context['grafico2']['data']['datasets'][0]['backgroundColor'] = ['rgba(54, 162, 235, 0.2)','rgba(153, 102, 255, 0.2)']
     context['grafico3']['data']['datasets'] = grafico3
+    context['grafico4']['data']['datasets'] = grafico4[1]
+    context['grafico4']['data']['labels'] = grafico4[0]
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 
@@ -209,8 +210,21 @@ def construir_datos_grafico3(vencimientos_dic):
     imagen_tres = grafico.union_datos(formato_grafico, grafico3)
     imagen_tres[0]['backgroundColor'] =  'rgba(54, 162, 235, 0.2)'
     imagen_tres[1]['backgroundColor'] =  'rgba(255, 99, 132, 0.2)'
-    imagen_tres[2]['backgroundColor'] =  'rgba(75, 192, 192, 0.2)'
     return imagen_tres
+
+
+## por revisar
+def construir_datos_grafico4(vencimientos_dic):
+    grafico = GraficoRevisor_Estadoimpuesto()
+    datos_revisor = grafico.datos_excel(vencimientos_dic)
+    datos_pdf = grafico.datos_pdf(vencimientos_dic)
+    grafica4 = grafico.union_datos(datos_revisor,datos_pdf)
+    imagen4 = grafico.formato_data(grafica4)
+    imagen4[1][0]['backgroundColor']= 'rgba(54, 162, 235, 0.2)'
+    imagen4[1][1]['backgroundColor']= 'rgba(255, 99, 132, 0.2)'
+    imagen4[1][2]['backgroundColor']= 'rgba(75, 192, 192, 0.2)'
+    return imagen4
+
 
 def datos_graficos():
 
