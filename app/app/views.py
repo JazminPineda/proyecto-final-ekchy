@@ -173,14 +173,11 @@ def dashboard_API(request):
     context = datos_graficos()
     vencimientos_dic = consultar_vencimientos()
 
-    grafico4 = construir_datos_grafico4(vencimientos_dic)
-
     context['grafico1']['data'] = construir_datos_grafico1(vencimientos_dic)
     context['grafico2']['data'] = construir_datos_grafico2(vencimientos_dic)
     context['grafico3']['data'] = construir_datos_grafico3(vencimientos_dic)
+    context['grafico4']['data'] = construir_datos_grafico4(vencimientos_dic)
 
-    context['grafico4']['data']['datasets'] = grafico4[1]
-    context['grafico4']['data']['labels'] = grafico4[0]
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 
@@ -247,16 +244,18 @@ def construir_datos_grafico3(vencimientos_dic):
 
 
 def construir_datos_grafico4(vencimientos_dic):
-    grafico4 = {'datasets': []}
+    grafico4 ={}
     grafico = GraficoRevisor_Estadoimpuesto()
     datos_revisor = grafico.datos_excel(vencimientos_dic)
     datos_pdf = grafico.datos_pdf(vencimientos_dic)
     union_datos = grafico.union_datos(datos_revisor,datos_pdf)
     imagen4 = grafico.formato_data(union_datos)
+    grafico4['labels'] = imagen4[0]
     imagen4[1][0]['backgroundColor']= 'rgba(54, 162, 235, 0.2)'
     imagen4[1][1]['backgroundColor']= 'rgba(255, 99, 132, 0.2)'
     imagen4[1][2]['backgroundColor']= 'rgba(75, 192, 192, 0.2)'
-    return imagen4
+    grafico4['datasets'] = imagen4[1]
+    return grafico4
 
 
 def datos_graficos():
