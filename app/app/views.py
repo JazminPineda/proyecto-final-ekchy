@@ -173,14 +173,12 @@ def dashboard_API(request):
     context = datos_graficos()
     vencimientos_dic = consultar_vencimientos()
 
-    grafico2 = construir_datos_grafico2(vencimientos_dic)
-    grafico3 = construir_datos_grafico3(vencimientos_dic)
     grafico4 = construir_datos_grafico4(vencimientos_dic)
 
     context['grafico1']['data'] = construir_datos_grafico1(vencimientos_dic)
-    context['grafico2']['data']['datasets'][0]['data'] = grafico2
-    context['grafico2']['data']['datasets'][0]['backgroundColor'] = ['rgba(54, 162, 235, 0.2)','rgba(153, 102, 255, 0.2)']
-    context['grafico3']['data']['datasets'] = grafico3
+    context['grafico2']['data'] = construir_datos_grafico2(vencimientos_dic)
+    context['grafico3']['data'] = construir_datos_grafico3(vencimientos_dic)
+
     context['grafico4']['data']['datasets'] = grafico4[1]
     context['grafico4']['data']['labels'] = grafico4[0]
     return HttpResponse(json.dumps(context), content_type="application/json")
@@ -212,27 +210,49 @@ def construir_datos_grafico1(vencimientos_dic):
     return grafico1
 
 def construir_datos_grafico2(vencimientos_dic):
-    grafico = GraficoEstadoImpuesto()
-    grafico2 = grafico.cantidadDocumentosProcesados(vencimientos_dic)
+    grafico2 = {'datasets': []}
+    grafico_estado_impts = GraficoEstadoImpuesto()
+    imagen_dos = grafico_estado_impts.cantidadDocumentosProcesados(vencimientos_dic)
+    grafico2['datasets'].append({
+        'label': 'Estado de documentos por mes',
+        'data':imagen_dos,
+        'backgroundColor': [
+            'rgba(153, 102, 255, 0.2)',
+        ],
+        'borderColor': [
+            'rgba(153, 102, 255, 1)',
+        ],
+        'borderWidth': 1
+        })
+
     return grafico2
 
+
+
 def construir_datos_grafico3(vencimientos_dic):
+    grafico3 = {'datasets': []}
     grafico = GraficoEstadoMes()
     formato_grafico = grafico.datos_xls(vencimientos_dic)
-    grafico3 = grafico.procesamiento_mes(vencimientos_dic)
-    imagen_tres = grafico.union_datos(formato_grafico, grafico3)
-    imagen_tres[0]['backgroundColor'] =  'rgba(54, 162, 235, 0.2)'
-    imagen_tres[1]['backgroundColor'] =  'rgba(255, 99, 132, 0.2)'
-    return imagen_tres
+    docts_mes = grafico.procesamiento_mes(vencimientos_dic)
+    imagen_tres = grafico.union_datos(formato_grafico, docts_mes)
+
+    imagen_tres[0]['backgroundColor']='rgba(75, 192, 192, 0.2)'
+    imagen_tres[0]['borderColor']='rgba(75, 192, 192, 0.2)'
+    imagen_tres[1]['backgroundColor']='rgba(255, 99, 132, 0.2)'
+    imagen_tres[1]['borderColor']='rgba(255, 99, 132, 0.2)'
+
+    grafico3['datasets'] = imagen_tres
+
+    return grafico3
 
 
-## por revisar
 def construir_datos_grafico4(vencimientos_dic):
+    grafico4 = {'datasets': []}
     grafico = GraficoRevisor_Estadoimpuesto()
     datos_revisor = grafico.datos_excel(vencimientos_dic)
     datos_pdf = grafico.datos_pdf(vencimientos_dic)
-    grafica4 = grafico.union_datos(datos_revisor,datos_pdf)
-    imagen4 = grafico.formato_data(grafica4)
+    union_datos = grafico.union_datos(datos_revisor,datos_pdf)
+    imagen4 = grafico.formato_data(union_datos)
     imagen4[1][0]['backgroundColor']= 'rgba(54, 162, 235, 0.2)'
     imagen4[1][1]['backgroundColor']= 'rgba(255, 99, 132, 0.2)'
     imagen4[1][2]['backgroundColor']= 'rgba(75, 192, 192, 0.2)'
