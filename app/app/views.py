@@ -172,12 +172,12 @@ def dashboard_API(request):
     """Devuelve los datos de la BD"""
     context = datos_graficos()
     vencimientos_dic = consultar_vencimientos()
-    grafico1 = construir_datos_grafico1(vencimientos_dic)
+
     grafico2 = construir_datos_grafico2(vencimientos_dic)
     grafico3 = construir_datos_grafico3(vencimientos_dic)
     grafico4 = construir_datos_grafico4(vencimientos_dic)
 
-    context['grafico1']['data']['datasets'][0]['data'] = grafico1
+    context['grafico1']['data'] = construir_datos_grafico1(vencimientos_dic)
     context['grafico2']['data']['datasets'][0]['data'] = grafico2
     context['grafico2']['data']['datasets'][0]['backgroundColor'] = ['rgba(54, 162, 235, 0.2)','rgba(153, 102, 255, 0.2)']
     context['grafico3']['data']['datasets'] = grafico3
@@ -193,10 +193,23 @@ def consultar_vencimientos():
 
 
 def construir_datos_grafico1(vencimientos_dic):
-    grafico = GraficoPeriodoImpuesto()
-    grafico1 = grafico.cantidadImpuesto(vencimientos_dic)
-    imagen_uno = grafico.formato_data(grafico1)
-    return imagen_uno
+    grafico1 = {'datasets': []}
+    grafico_periodo = GraficoPeriodoImpuesto()
+    impuestos = grafico_periodo.cantidadImpuesto(vencimientos_dic)
+    imagen_uno = grafico_periodo.formato_data(impuestos)
+    grafico1['datasets'].append({
+        'label': 'Procesamiento de Impuestos por mes',
+        'data':imagen_uno,
+        'backgroundColor': [
+            'rgba(54, 162, 235, 0.2)',
+        ],
+        'borderColor': [
+            'rgba(54, 162, 235, 1)',
+        ],
+        'borderWidth': 1
+        })
+
+    return grafico1
 
 def construir_datos_grafico2(vencimientos_dic):
     grafico = GraficoEstadoImpuesto()
