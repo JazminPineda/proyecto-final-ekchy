@@ -62,14 +62,12 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 * Empezar a conectar cada modulo en la interfaz(web) y la Base Datos y los distintos módulos para que funcione como es esperado.
 
 
-## Tareas Foco 30/09/2022
+## Tareas Foco 5/10/2022
 
-* Mejorar interfaz
-* crear usuario y contraseña cuando este en esa vista de subida información
-* construir excel donde se crea pdf extrac , modificar exel y crearlo sin visualizacion pero que quede en bd extract
-* que a partir de la generacion de los datos se grafique el excel
-* Probar que los datos ya estan cargados cuando se sube el excel.
-* Crear metodos según estructura de grafica de los indicadores (j) ok Pendiente probar
+* Mejorar interfaz con colores dinamicos
+* Asociar la vista para que pida la contraseña ADMON usuario y contraseña cuando este en esa vista de subida información//
+* Crear otra base de datos para subir y ver diferencias de procesos con mas revisores
+* Crear funcion que cuando se cargue el excel del segundo proceso, no se suba dos veves la misma informacion, es decir por cada mes un docts unico
 * Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
 
 
@@ -77,19 +75,22 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 1. Tabla de autenticación (No prioritatio)
 2. Subir a una API (No prioritatio)
 3. Revision Docto helper.ipynb
-4. Arreglar modelo de Procesamiento .drawio (pendiente / NP)
-5. Actualizar mokup corrección
-6. Indicadores definir y calcular ok
+4. Arreglar modelo de Procesamiento .drawio (No prioritatio)
+5. Actualizar mokup corrección (No prioritatio)
+6. Indicadores definir y calcular (pendiente uno)
 7. Anotar decisiones que se han tomado (Iterativo)
 
 
 
-
-
-
-
-
 # Hecho
+8 de oct
+
+
+30 de sept
+* Crear metodos según estructura de grafica de los indicadores (j) ok Pendiente probar
+* Probar que los datos ya estan cargados cuando se sube el excel.
+* que a partir de la generacion de los datos se grafique el excel
+* construir excel donde se crea pdf extrac , modificar exel y crearlo sin visualizacion pero que quede en bd extract
 * Revisar proceamiento excel, probrar django y creación tabla BD.
 * Subida de excel y hacer la comparación (pendiente definir tabla para guardar datos)
 * Probar para cada pais como funciona la subida de cada pais. crear y subir pdfs (se tienen que revisar cosas porque cada uno funciona de manera diferente)
