@@ -1,9 +1,10 @@
+from core.models import *
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.http import HttpResponse
+from django.urls import path
 from django.utils.translation import gettext_lazy as _
-
-
-from core import models
+from app.views import xml_upload_period_view
 
 
 class UserAdmin(BaseUserAdmin):
@@ -46,11 +47,33 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
-admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Empresa)
-admin.site.register(models.Impuesto)
-admin.site.register(models.Empleado)
-admin.site.register(models.Proceso)
-admin.site.register(models.Documento)
-admin.site.register(models.Extraccion)
-admin.site.register(models.VencimientoImpuesto)
+# my dummy model
+class PeriodosAnteriores(models.Model):
+
+    class Meta:
+        verbose_name_plural = 'Subir periodos anteriores'
+        app_label = 'core'
+
+# def my_custom_view(request):
+#     return HttpResponse('Admin Custom View')
+
+class PeriodosAnterioresAdmin(admin.ModelAdmin):
+    model = PeriodosAnteriores
+
+    def get_urls(self):
+        view_name = '{}_{}_changelist'.format(
+            self.model._meta.app_label, self.model._meta.model_name)
+        return [
+            path('', xml_upload_period_view, name=view_name),
+        ]
+
+admin.site.register(PeriodosAnteriores, PeriodosAnterioresAdmin)
+
+admin.site.register(User, UserAdmin)
+admin.site.register(Empresa,)
+admin.site.register(Impuesto)
+admin.site.register(Empleado)
+admin.site.register(Proceso)
+admin.site.register(Documento)
+admin.site.register(Extraccion)
+admin.site.register(VencimientoImpuesto)

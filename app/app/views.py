@@ -1,4 +1,5 @@
 import json
+from multiprocessing import context
 import os
 from datetime import date, datetime
 from io import BytesIO
@@ -14,8 +15,27 @@ from dataextraction.cololombia_extraccion import ExtraccionColombia
 from dataextraction.lectura_excel import ProcesamientoExcel  # jaz
 from dataextraction.mexico_extraccion import ExtraccionMexico
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 
+
+def login_view(request):
+    context = {
+        "next": request.GET['next']
+    }
+    return render(request, "login.html",context)
+
+def autenticate(request):
+    username = request.POST['email']
+    password = request.POST['password']
+    next = request.GET['next']
+    print(username,password,next)
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return redirect(next)
+    return render(request, "login.html")
 
 def index_view(request):
     # return HttpResponse('Hello World!')
@@ -25,7 +45,7 @@ def index_view(request):
     }
     return render(request, template, context)
 
-
+@login_required
 def pdf_upload_view(request):
     # return HttpResponse('Hello World!')
     empresas = Empresa.objects.all()
@@ -35,6 +55,8 @@ def pdf_upload_view(request):
     }
     return render(request, template, context)
 
+
+@login_required
 def pdf_upload(request):
     empresa_id = request.POST.getlist('empresa')[0]
     files = request.FILES.getlist('files')
@@ -95,7 +117,7 @@ def process_pdf(proceso:Proceso, document:Documento, empresa:Empresa):
 
 
 ## Subida xml fecha de vencimientos
-
+@login_required
 def xml_upload_view(request):
     template = 'xml_upload.html'
     context = {
@@ -103,7 +125,7 @@ def xml_upload_view(request):
     }
     return render(request, template, context)
 
-
+@login_required
 def xml_upload(request):
     # empresa_id = request.POST.getlist('empresa')[0]
     files = request.FILES.getlist('files')[0]

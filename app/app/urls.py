@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from app.views import (dashboard_API, dashboard_view, index_view, pdf_upload,
-                       pdf_upload_view, xml_upload, xml_upload_period,
-                       xml_upload_period_view, xml_upload_view)
+from app.views import (autenticate, dashboard_API, dashboard_view, index_view,
+                       login_view, pdf_upload, pdf_upload_view, xml_upload,
+                       xml_upload_period, xml_upload_period_view,
+                       xml_upload_view)
 
 urlpatterns = [
+    path("accounts/login/", login_view),
+    path("autenticate", autenticate),
     path('admin/', admin.site.urls),
     path('', index_view),
     path('pdf-upload-view', pdf_upload_view),
@@ -31,6 +34,6 @@ urlpatterns = [
     #comienzo
     path('xml-upload-view', xml_upload_view),
     path('xml-upload',  xml_upload ),
-    path('xml-upload-period-anteriores', xml_upload_period_view),
+    # path('xml-upload-period-anteriores', xml_upload_period_view),
     path('xml-upload-periodos',  xml_upload_period),
 ]

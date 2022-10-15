@@ -1,13 +1,12 @@
-from email.policy import default
 import os
 import uuid
+from email.policy import default
 from statistics import mode
+
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
+
 
 class Pais(models.Choices):
     ARGENTINA = "ARG"
