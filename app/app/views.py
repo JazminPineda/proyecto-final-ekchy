@@ -297,8 +297,32 @@ def datos_graficos():
         'grafico1':{
             'data':{
                     'datasets': [{
-                        'label': 'Procesamiento de Impuestos por mes',
+                        'label': 'Totales',
                         'data': {'3': 14, '2': 19, '1': 11},
+                        'backgroundColor': [
+                            'rgba(54, 162, 235, 0.2)',
+                            # 'rgba(255, 206, 86, 0.2)',
+                            # 'rgba(75, 192, 192, 0.2)',
+                            # 'rgba(153, 102, 255, 0.2)',
+                            # 'rgba(255, 159, 64, 0.2)'
+                        ],
+                        'borderColor': [
+
+                            'rgba(54, 162, 235, 1)',
+                            # 'rgba(255, 206, 86, 1)',
+                            # 'rgba(75, 192, 192, 1)',
+                            # 'rgba(153, 102, 255, 1)',
+                            # 'rgba(255, 159, 64, 1)'
+                        ],
+                        'borderWidth': 1
+                    }]
+                }
+        },
+        'grafico2':{
+            'data':{
+                    'datasets': [{
+                        'label': 'Estado de documentos por mes',
+                        'data': {'OK Procesado': 26, 'Pendiente': 11, 'Corrección': 3, 'No procesado': 4},
                         'backgroundColor': [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
@@ -316,14 +340,6 @@ def datos_graficos():
                             'rgba(255, 159, 64, 1)'
                         ],
                         'borderWidth': 1
-                    }]
-                }
-        },
-        'grafico2':{
-            'data':{
-                    'datasets': [{
-                        'label': 'Estado de documentos por mes',
-                        'data': {'OK Procesado': 26, 'Pendiente': 11, 'Corrección': 3, 'No procesado': 4},
                  }]
             }
         },
@@ -333,25 +349,51 @@ def datos_graficos():
                             {
                                 'label': 'OK Procesado',
                                 'data': {'3': 3, '2': 16, '1': 7},
-                                'backgroundColor': '#dc3545',
+                                'backgroundColor': [
+                                    'rgba(54, 162, 235, 0.2)',
+                                ],
+                                'borderColor': [
+                                    'rgba(54, 162, 235, 1)',
+                                ],
+                                'borderWidth': 1
 
                             },
                             {
                                 'label': 'Pendiente',
                                 'data': {'3': 11},
-                                'backgroundColor': '#0d6efd',
-                            },
+                                'backgroundColor': [
+                                    # 'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 99, 132, 0.2)',
+                                ],
+                                'borderColor': [
+                                    # 'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 99, 132, 1)',
+                                ],
+                                'borderWidth': 1
+                                    },
 
                             {
                                 'label': 'Corrección',
                                 'data': {'2': 3},
-                                'backgroundColor': '#20c997',
+                                'backgroundColor': [
+                                    'rgba(255, 206, 86, 0.2)',
+                                ],
+                                'borderColor': [
+                                    'rgba(255, 206, 86, 1)',
+                                ],
+                                'borderWidth': 1
                             },
 
                             {
                                 'label': 'No procesado',
                                 'data': {'1': 4},
-                                'backgroundColor': '#ffc107',
+                                'backgroundColor': [
+                                    'rgba(75, 192, 192, 0.2)',
+                                ],
+                                'borderColor': [
+                                    'rgba(75, 192, 192, 1)',
+                                ],
+                                'borderWidth': 1
                             }
                         ]
                     }
@@ -365,19 +407,37 @@ def datos_graficos():
                             # 'axis': 'y',
                             'label': 'OK Procesado',
                              'data':  [6, 5, 6,3],
-                             'backgroundColor': '#0d6efd',
+                                'backgroundColor': [
+                                     'rgba(54, 162, 235, 0.2)',
+                                ],
+                                'borderColor': [
+                                    'rgba(54, 162, 235, 1)',
+                                ],
+                                'borderWidth': 1
                         },
                         {
                             # 'axis': 'y',
                             'label': 'Pendiente',
                             'data': [ 3, 3, 3, 2],
-                            'backgroundColor': '#20c997',
+                                'backgroundColor': [
+                                    'rgba(255, 99, 132, 0.2)',
+                                ],
+                                'borderColor': [
+                                    'rgba(255, 99, 132, 1)',
+                                ],
+                                'borderWidth': 1
                         },
                         {
                             # 'axis': 'y',
                             'label': 'No procesado',
                             'data': [ 1,1,6,1 ],
-                            'backgroundColor': '#ffc107',
+                                'backgroundColor': [
+                                    'rgba(255, 206, 86, 0.2)',
+                                ],
+                                'borderColor': [
+                                    'rgba(255, 206, 86, 1)',
+                                ],
+                                'borderWidth': 1
                         },
 
                     ]

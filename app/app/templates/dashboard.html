@@ -1,50 +1,72 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="row">
+<div class="d-md-flex gap-3">
 
-  <div class="col-sm">
-    <div class="card" style="width: 18rem;">
+  <!-- <div class=" flex-fill"> -->
+    <div class="card flex-fill text-center" style="width: 20rem;">
       <div class="card-body">
         <h5 class="card-title">Total Impuestos hasta hoy</h5>
         <p class="card-text">45</p>
 
       </div>
     </div>
-  </div>
-  <div class="col-sm">
-    <div class="card" style="width: 18rem;">
+  <!-- </div> -->
+  <!-- <div class="flex-fill"> -->
+    <div class="card flex-fill text-center" style="width: 20rem;">
       <div class="card-body">
-        <h5 class="card-title">Total Impuestos Procesados del mes en curso</h5>
+        <h5 class="card-title">Impuestos Procesados del mes</h5>
        <p class="card-text">3</p>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 
-  <div class="col-sm">
-    <div class="card" style="width: 18rem;">
+  <!-- <div class=" flex-fill"> -->
+    <div class="card flex-fill text-center" style="width: 20rem;">
       <div class="card-body">
-        <h5 class="card-title">Total Impuestos Pendientes del mes en curso</h5>
+        <h5 class="card-title">Impuestos Pendientes del mes</h5>
 
         <p class="card-text">11</p>
       </div>
     </div>
-  </div>
-
+  <!-- </div> -->
 </div>
-<div class="row">
-    <div class="col-6">
+<div class="row mt-4 mb-3 justify-content-evenly">
+  <div class="col-4">
+
+      <h3>Total de Impuestos por mes </h3>
+
+  </div>
+  <div class="col-4">
+
+      <h3>Estado tendecias de procesos de procesos</h3>
+
+  </div>
+</div>
+<div class="row justify-content-evenly">
+    <div class="col-4">
         <canvas id="grafico1" width="200" height="200"></canvas>
     </div>
-    <div class="col-6">
+    <div class="col-4">
         <canvas id="grafico2" width="200" height="200"></canvas>
     </div>
 </div>
+<div class="row mt-5 mb-3 justify-content-evenly">
+  <div class="col-4">
 
-<div class="row">
-    <div class="col-6">
+      <h3>Estado de Procesamiento del Impuesto por mes </h3>
+
+  </div>
+  <div class="col-4">
+
+      <h3>Nivel de productividad </h3>
+
+  </div>
+</div>
+<div class="row justify-content-evenly mb-5">
+    <div class="col-4">
         <canvas id="grafico3" width="200" height="200"></canvas>
     </div>
-    <div class="col-6">
+    <div class="col-4">
         <canvas id="grafico4" width="200" height="200"></canvas>
     </div>
 </div>

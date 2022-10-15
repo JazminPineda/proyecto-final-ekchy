@@ -25,7 +25,7 @@ urlpatterns = [
     path("accounts/login/", login_view),
     path("autenticate", autenticate),
     path('admin/', admin.site.urls),
-    path('', index_view),
+    path('index.html', index_view),
     path('pdf-upload-view', pdf_upload_view),
     path('pdf-upload', pdf_upload),
     path('api/user/', include('user.urls')),
