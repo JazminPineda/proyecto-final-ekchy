@@ -19,7 +19,7 @@ class ExtraccionArgentina(Extraer):  # a#
     ruta_archivo = (
         "app/dataextraction/Recibos/ARG/AR02 BSF AR02_IVA_02.2022_F 731 DDJJ .pdf"
     )
-    # Atributos
+    # Atributos con expresiones regulares
     proceso_regex = r"[\d|\.]+,\d{2}$"  # 0
     id_tax_regex = r"\d{2}\-\d{8}\-\d{1}"  # 1
     periodo_regex = r"\d{2}\-\d{4}\s\d{0}"  # 2

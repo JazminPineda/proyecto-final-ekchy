@@ -34,7 +34,17 @@ class ProcesamientoExcel():
         encontrado = str(vencimiento.id_razonsocial).replace("-","").upper().strip() == str(extrccion_pdf.id_razonsocial).replace("-","").upper().strip()
         return encontrado
 
+    @classmethod
+    def obtener_registros_vencimientos(cls):
+        periodo = {}
+        vencimientos = VencimientoImpuesto.objects.all()
+        for element in vencimientos:
+            if f'{element.año}-{element.mes}' not in periodo.keys():
+                periodo[f"{element.año}-{element.mes}"] = []
 
+            if element.id_razonsocial not in periodo[f'{element.año}-{element.mes}']:
+                periodo[f'{element.año}-{element.mes}'].append(element.id_razonsocial)
+        return periodo
 
     @classmethod
     def validar_datos(cls,procesos, dato_xls):
@@ -44,12 +54,15 @@ class ProcesamientoExcel():
                 extraccion_pdf = Extraccion.objects.get(id=proceso.id_extraccion.id)
                 if ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
                     vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.PROCESADO
-                    print(resultados.append(vencimiento))
+                    resultados.append(vencimiento)
         for vencimiento in dato_xls:
             if vencimiento not in resultados and not ProcesamientoExcel.comparo(vencimiento, extraccion_pdf):
                     vencimiento.proceso  = VencimientoImpuesto.EstadoVencimiento.NO_PROCESADO
-                    print(resultados.append(vencimiento))
+                    resultados.append(vencimiento)
         return resultados
+
+
+
 
 class ProcesamientoExcelTest():
 
@@ -68,7 +81,7 @@ class ProcesamientoExcelTest():
             fecha_entrega = fila[6], # datetime.strptime(fila[6], '%d/%m/%Y'),
             fecha_revisado = fila[7], # datetime.strptime(fila[7], '%d/%m/%Y'),
             review = fila[8],
-            # proceso = fila[9],
+
         )
 
         return excel_datos

@@ -7,7 +7,9 @@ from django.core.management import call_command
 from django.db.utils import OperationalError
 from django.test import SimpleTestCase
 
-
+'''
+Son unitest de un comando que comprueba que halla conexión con la base de datos
+'''
 @patch("core.management.commands.wait_for_db.Command.check")
 class CommandTests(SimpleTestCase):
     """Test commands."""

@@ -1,16 +1,20 @@
+import json
+import os
+from datetime import date, datetime
+from io import BytesIO
+
+import openpyxl  # ediciones
+from core.models import (Documento, Empresa, Extraccion, Pais, Proceso,
+                         VencimientoImpuesto)
+from dataextraction.argentina_extraccion import ExtraccionArgentina
+from dataextraction.calculos import (GraficoEstadoImpuesto, GraficoEstadoMes,
+                                     GraficoPeriodoImpuesto,
+                                     GraficoRevisor_Estadoimpuesto)
+from dataextraction.cololombia_extraccion import ExtraccionColombia
+from dataextraction.lectura_excel import ProcesamientoExcel  # jaz
+from dataextraction.mexico_extraccion import ExtraccionMexico
 from django.http import HttpResponse
 from django.shortcuts import render
-import json
-from core.models import Empresa, Documento, Proceso, Pais, Extraccion, VencimientoImpuesto
-from dataextraction.argentina_extraccion import ExtraccionArgentina
-from dataextraction.cololombia_extraccion import ExtraccionColombia
-from dataextraction.mexico_extraccion import ExtraccionMexico
-from dataextraction.calculos import GraficoPeriodoImpuesto, GraficoEstadoImpuesto, GraficoEstadoMes, GraficoRevisor_Estadoimpuesto
-import os
-from datetime import date
-from dataextraction.lectura_excel import ProcesamientoExcel #jaz
-from io import BytesIO
-import openpyxl #ediciones
 
 
 def index_view(request):
@@ -106,15 +110,22 @@ def xml_upload(request):
     lista = ProcesamientoExcel.lectura_xls(files)
     procesos = Proceso.objects.all().filter(estado= Proceso.Estados.PROCESADO)
     resultados = ProcesamientoExcel.validar_datos(procesos, lista)
+    vencimientos_procesados = ProcesamientoExcel.obtener_registros_vencimientos()
+
     for resultado in resultados:
-        resultado.save()
+        if f'{resultado.año}-{resultado.mes}' not in vencimientos_procesados.keys() \
+                    or (f'{resultado.año}-{resultado.mes}' in vencimientos_procesados.keys() \
+                        and resultado.id_razonsocial not in vencimientos_procesados[f'{resultado.año}-{resultado.mes}']):
+            resultado.save()
 
 
-    empresas = Empresa.objects.all()
-    template = 'xml_upload.html'
+
+    template = 'view_grilla_vencimientos.html'
+    fecha_de_hoy = datetime.today()
     context = {
-        "empresas": empresas,
-        "mensaje": "Se subieron y se procesaron los pdf correctamente"
+        "vencimientos": resultados,
+        "fecha": fecha_de_hoy,
+        "mensaje": "Se subió y se procesó el xml correctamente"
     }
     return render(request, template, context)
 

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block body %}
+
+
+<h2>Vencimientos del mes {{ fecha|date:"F"}}</h2>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Pais</th>
+                <th scope="col">ID Empresa</th>
+                <th scope="col">Nombre Empresa</th>
+                <th scope="col">Periodo Fiscal</th>
+                <th scope="col">Nombre Form</th>
+                <th scope="col">Fecha Vencimiento</th>
+                <th scope="col">Revisor</th>
+                <th scope="col">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vencimiento in vencimientos %}
+            <tr>
+                <td>{{vencimiento.pais}}</td>
+                <td>{{vencimiento.id_razonsocial}}</td>
+                <td>{{vencimiento.nombre_empresa}} </td>
+                <td>{{vencimiento.periodo_fiscal}}</td>
+                <td>{{vencimiento.nombre_formulario}}</td>
+                <td>{{vencimiento.fecha_vencimiento}}</td>
+                <td>{{vencimiento.review}}</td>
+                <td>{{vencimiento.proceso}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+
+{% endblock %}
