@@ -65,10 +65,14 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 ## Tareas Foco 5/10/2022
 
 * Mejorar interfaz con colores dinamicos
+* Colocar datos en numeros para que se actualice segun su descripción
 * Asociar la vista para que pida la contraseña ADMON usuario y contraseña cuando este en esa vista de subida información//
-* Crear otra base de datos para subir y ver diferencias de procesos con mas revisores
+* Crear otra base de datos para subir y ver diferencias de procesos con mas revisores/ jaz excel
 * Crear funcion que cuando se cargue el excel del segundo proceso, no se suba dos veves la misma informacion, es decir por cada mes un docts unico
 * Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
+
+
+## Presentación al profesor
 
 
 ## Tareas no urgentes
@@ -84,7 +88,7 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 # Hecho
 8 de oct
-
+* Se crea visualizacion de tabla procesado del excel
 
 30 de sept
 * Crear metodos según estructura de grafica de los indicadores (j) ok Pendiente probar

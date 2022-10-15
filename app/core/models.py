@@ -133,7 +133,7 @@ class VencimientoImpuesto(models.Model):
     proceso = models.CharField(max_length=50, choices=EstadoVencimiento.choices, blank=False)
 
     def __str__(self):
-        return f'{self.pais} | {self.id_razonsocial} | {self.nombre_empresa} | {self.periodo_fiscal} | {self.nombre_formulario} | {self.fecha_vencimiento} | {self.proceso}'
+        return f'{self.pais} | {self.id_razonsocial} | {self.nombre_empresa} | {self.periodo_fiscal} | {self.año} |{self.nombre_formulario} | {self.fecha_vencimiento} | {self.proceso}'
 # class Responsabilidad(models.Model):
 #     cargo = models.CharField(max_length=10, choices=OPCIONES_RESPOSABILIDADES, blank=False)
 
