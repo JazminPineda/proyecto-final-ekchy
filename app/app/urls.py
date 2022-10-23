@@ -18,14 +18,15 @@ from django.urls import include, path
 
 from app.views import (autenticate, dashboard_API, dashboard_view, index_view,
                        login_view, pdf_upload, pdf_upload_view, xml_upload,
-                       xml_upload_period, xml_upload_period_view,
+                       xml_upload_period, logout_api,
                        xml_upload_view)
 
 urlpatterns = [
-    path("accounts/login/", login_view),
+    path("accounts/login/", login_view, name="login"),
     path("autenticate", autenticate),
+    path('logout/', logout_api, name='logout'),
     path('admin/', admin.site.urls),
-    path('index.html', index_view),
+    path('', index_view),
     path('pdf-upload-view', pdf_upload_view),
     path('pdf-upload', pdf_upload),
     path('api/user/', include('user.urls')),
