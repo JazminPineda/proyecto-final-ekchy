@@ -19,7 +19,16 @@
                 $.getJSON("/dashboard-data", function( body ) { //hace la petición a django en la función calcular
                     console.log(body)
 
+                    var totalImpuestosHoy = document.getElementById('totalImpuestoHoy');
+                    var impuestosProcesados = document.getElementById('impuestosProcesados');
+                    var impuestosPendientes = document.getElementById('impuestosPendientes');
+                    totalImpuestosHoy.textContent  = body.totalImpuestoHoy;
+                    impuestosProcesados.textContent = body.impuestosProcesados;
+                    impuestosPendientes.textContent = body.impuestosPendientes;
+
+
                     var canvasgrafico1 = document.getElementById('grafico1');
+
                     const grafico1 = new Chart(canvasgrafico1, {
                     type: 'bar',
                     data: body.grafico1.data,

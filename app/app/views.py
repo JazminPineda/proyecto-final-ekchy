@@ -210,9 +210,20 @@ def dashboard_API(request):
     context['grafico2']['data'] = construir_datos_grafico2(vencimientos_dic)
     context['grafico3']['data'] = construir_datos_grafico3(vencimientos_dic)
     context['grafico4']['data'] = construir_datos_grafico4(vencimientos_dic)
+    context['totalImpuestoHoy'] = calcular_total_impuestos_hoy()
+    context['impuestosProcesados'] = calcular_impuestosprocesados()
+    context['impuestosPendientes']= calcular_impuestospendientes()
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 
+def calcular_total_impuestos_hoy():
+    return 25
+
+def calcular_impuestosprocesados():
+    return 10
+
+def calcular_impuestospendientes():
+    return 15
 
 def consultar_vencimientos():
     vencimientos = VencimientoImpuesto.objects.all()
