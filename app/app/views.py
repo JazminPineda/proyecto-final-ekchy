@@ -1,3 +1,4 @@
+from itertools import count
 import json
 from multiprocessing import context
 import os
@@ -210,20 +211,32 @@ def dashboard_API(request):
     context['grafico2']['data'] = construir_datos_grafico2(vencimientos_dic)
     context['grafico3']['data'] = construir_datos_grafico3(vencimientos_dic)
     context['grafico4']['data'] = construir_datos_grafico4(vencimientos_dic)
-    context['totalImpuestoHoy'] = calcular_total_impuestos_hoy()
-    context['impuestosProcesados'] = calcular_impuestosprocesados()
-    context['impuestosPendientes']= calcular_impuestospendientes()
+    context['totalImpuestoHoy'] = calcular_total_impuestos_hoy(vencimientos_dic)
+    context['impuestosProcesados'] = calcular_impuestosprocesados(vencimientos_dic)
+    context['impuestosPendientes']= calcular_impuestospendientes(vencimientos_dic)
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 
-def calcular_total_impuestos_hoy():
-    return 25
+def calcular_total_impuestos_hoy(vencimientos):
+    return len(vencimientos)
 
-def calcular_impuestosprocesados():
-    return 10
+def calcular_impuestosprocesados(vencimientos):
+    contador = 0
+    mes_encurso = date.today().month
 
-def calcular_impuestospendientes():
-    return 15
+    for impuesto in vencimientos:
+        if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Procesado':
+            contador += 1
+    return contador
+
+
+def calcular_impuestospendientes(vencimientos):
+    contador = 0
+    mes_encurso = date.today().month
+    for impuesto in vencimientos:
+        if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Pendiente':
+            contador += 1
+    return contador
 
 def consultar_vencimientos():
     vencimientos = VencimientoImpuesto.objects.all()
