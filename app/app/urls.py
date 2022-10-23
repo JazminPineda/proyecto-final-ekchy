@@ -32,9 +32,7 @@ urlpatterns = [
     path('api/user/', include('user.urls')),
     path("dashboard-view", dashboard_view),
     path("dashboard-data", dashboard_API),
-    #comienzo
     path('xml-upload-view', xml_upload_view),
     path('xml-upload',  xml_upload ),
-    # path('xml-upload-period-anteriores', xml_upload_period_view),
     path('xml-upload-periodos',  xml_upload_period),
 ]
