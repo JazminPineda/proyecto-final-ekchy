@@ -207,7 +207,7 @@ def xml_upload_period(request):
 
 ## dashboard
 
-
+@login_required
 def dashboard_view(request):
     """Devuelve html vista """
     template = 'dashboard.html'
@@ -238,7 +238,7 @@ def calcular_total_impuestos_hoy(vencimientos):
 
 def calcular_impuestosprocesados(vencimientos):
     contador = 0
-    mes_encurso = date.today().month
+    mes_encurso = date(2022,4,4).month
 
     for impuesto in vencimientos:
         if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Procesado':
@@ -248,7 +248,7 @@ def calcular_impuestosprocesados(vencimientos):
 
 def calcular_impuestospendientes(vencimientos):
     contador = 0
-    mes_encurso = date.today().month
+    mes_encurso = date(2022,4,4).month
     for impuesto in vencimientos:
         if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Pendiente':
             contador += 1
