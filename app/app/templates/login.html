@@ -1,30 +1,29 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="row ustify-content-md-center">
-    <div class="col-md-auto mx-auto">
 
-        <h1><i class="bi bi-shuffle"></i> Identificarse por favor </h1>
+<div class="row justify-content-center">
+    <div class="col-5">
+        <form class="row g-3" action="/autenticate?next={{ next }}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" name="password" id="password" class="form-control">
+            </div>
+            <div class="d-flex justify-content-around gap-1 mx-auto">
+                <a href="/" class="flex-fill btn  btn-secondary" type="button">Volver</a>
+                <button class=" flex-fill btn btn-primary" type="submit">Iniciar sesión</button>
+              </div>
+            {% if mensaje %}
+            <div class="col-8">
+                <p>{{mensaje}}</p>
+            </div>
+            {% endif %}
+        </form>
     </div>
 </div>
-<form class="row g-3" action="/autenticate?next={{ next }}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="col-8">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" id="email" class="input-group">
-    </div>
-    <div class="col-8">
-        <label for="password" class="form-label">Contraseña</label>
-        <input type="password" name="password" id="password" class="input-group">
-    </div>
-    <div class="col-8">
-        <a href="/" class="btn btn-secondary">volver</a>
-        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-    </div>
-    {% if mensaje %}
-    <div class="col-8">
-        <p>{{mensaje}}</p>
-    </div>
-    {% endif %}
-</form>
-</div>
+
 {% endblock %}

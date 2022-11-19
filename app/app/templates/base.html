@@ -97,7 +97,7 @@
 <body class="ekchy">
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-1 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-4" href="1">
-            <h2><i class="bi bi-shuffle"></i>  Bienvenido a Ekchý</h2>
+            <h2><i class="bi bi-shuffle"></i> Ekchý app</h2>
         </a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -158,13 +158,21 @@
                         Dashboard
                       </a>
                     </li>
-
+                    {% if request.user.is_superuser %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="/admin">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers align-text-bottom" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                        Administración
+                      </a>
+                    </li>
+                    {% endif %}
                     </div>
               </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h3">{{title}}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
+
                       <!-- <div class="btn-group me-2">
                         <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
                         <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
