@@ -1,3 +1,4 @@
+
 import json
 from multiprocessing import context
 import os
@@ -17,18 +18,24 @@ from dataextraction.mexico_extraccion import ExtraccionMexico
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 def login_view(request):
+    next = '/'
+    if 'next' in request.GET.keys():
+        next = request.GET['next']
     context = {
-        "next": request.GET['next']
+        "next": next,
+        "title" : 'Ingresar al Sistema Ekchý'
     }
     return render(request, "login.html",context)
 
 def autenticate(request):
     username = request.POST['email']
     password = request.POST['password']
+    # next = "/"
+    # if 'next' in request.GET.keys():
     next = request.GET['next']
     print(username,password,next)
     user = authenticate(request, username=username, password=password)
@@ -37,12 +44,18 @@ def autenticate(request):
         return redirect(next)
     return render(request, "login.html")
 
+def logout_api(request):
+    logout(request)
+    return redirect("/")
+
 def index_view(request):
     # return HttpResponse('Hello World!')
     template = 'index.html'
     context = {
-        "paragraph": 'Awesome test'
+        "paragraph": 'Awesome test',
+        "title" : 'Inicio'
     }
+
     return render(request, template, context)
 
 @login_required
@@ -51,7 +64,8 @@ def pdf_upload_view(request):
     empresas = Empresa.objects.all()
     template = 'pdfupload.html'
     context = {
-        "empresas": empresas
+        "empresas": empresas,
+        "title" : 'Subir PDF'
     }
     return render(request, template, context)
 
@@ -78,7 +92,7 @@ def pdf_upload(request):
     template = 'pdfupload.html'
     context = {
         "empresas": empresas,
-        "mensaje": "Se subieron y se procesaron los pdf correctamente"
+        "mensaje": "Se subieron y se procesaron los pdf correctamente",
     }
     return render(request, template, context)
 
@@ -121,7 +135,8 @@ def process_pdf(proceso:Proceso, document:Documento, empresa:Empresa):
 def xml_upload_view(request):
     template = 'xml_upload.html'
     context = {
-        "empresas": []
+        "empresas": [],
+        "title" : 'Subir Excel'
     }
     return render(request, template, context)
 
@@ -157,7 +172,7 @@ def xml_upload(request):
 def xml_upload_period_view(request):
     template = 'xml-upload-periodos.html'
     context = {
-        "carga": []
+        "carga": [],
     }
     return render(request, template, context)
 
@@ -196,7 +211,9 @@ def xml_upload_period(request):
 def dashboard_view(request):
     """Devuelve html vista """
     template = 'dashboard.html'
-    context = {}
+    context = {
+        "title" : 'Dashboard'
+    }
 
     return render(request, template, context)
 
@@ -210,9 +227,32 @@ def dashboard_API(request):
     context['grafico2']['data'] = construir_datos_grafico2(vencimientos_dic)
     context['grafico3']['data'] = construir_datos_grafico3(vencimientos_dic)
     context['grafico4']['data'] = construir_datos_grafico4(vencimientos_dic)
+    context['totalImpuestoHoy'] = calcular_total_impuestos_hoy(vencimientos_dic)
+    context['impuestosProcesados'] = calcular_impuestosprocesados(vencimientos_dic)
+    context['impuestosPendientes']= calcular_impuestospendientes(vencimientos_dic)
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 
+def calcular_total_impuestos_hoy(vencimientos):
+    return len(vencimientos)
+
+def calcular_impuestosprocesados(vencimientos):
+    contador = 0
+    mes_encurso = date.today().month
+
+    for impuesto in vencimientos:
+        if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Procesado':
+            contador += 1
+    return contador
+
+
+def calcular_impuestospendientes(vencimientos):
+    contador = 0
+    mes_encurso = date.today().month
+    for impuesto in vencimientos:
+        if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Pendiente':
+            contador += 1
+    return contador
 
 def consultar_vencimientos():
     vencimientos = VencimientoImpuesto.objects.all()

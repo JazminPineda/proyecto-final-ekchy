@@ -19,7 +19,16 @@
                 $.getJSON("/dashboard-data", function( body ) { //hace la petición a django en la función calcular
                     console.log(body)
 
+                    var totalImpuestosHoy = document.getElementById('totalImpuestoHoy');
+                    var impuestosProcesados = document.getElementById('impuestosProcesados');
+                    var impuestosPendientes = document.getElementById('impuestosPendientes');
+                    totalImpuestosHoy.textContent  = body.totalImpuestoHoy;
+                    impuestosProcesados.textContent = body.impuestosProcesados;
+                    impuestosPendientes.textContent = body.impuestosPendientes;
+
+
                     var canvasgrafico1 = document.getElementById('grafico1');
+
                     const grafico1 = new Chart(canvasgrafico1, {
                     type: 'bar',
                     data: body.grafico1.data,
@@ -94,11 +103,25 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <!-- <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search" data-com.bitwarden.browser.user-edited="yes"> -->
-        <div class="navbar-nav">
-          <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="#">Salir</a>
+
+
+          {% if user.is_authenticated %}
+
+              <span class="navbar-text">Hola {{ user.name }}!!</span>
+            <div class="navbar-nav">
+            <div class="nav-item text-nowrap">
+              <a href="{% url 'logout' %}">Salir</a>
+            </dfv>
           </div>
-        </div>
+          {% else %}
+          <div class="navbar-nav">
+            <div class="nav-item text-nowrap">
+              <a href="{% url 'login' %}">Iniciar sesión</a>
+            </div>
+          </div>
+          {% endif %}
+
+
       </header>
     <div class="container-fluid">
         <div class="row">
@@ -106,9 +129,9 @@
                 <div class="position-sticky pt-3 sidebar-sticky">
                   <ul class="nav flex-column">
                     <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="/dashboard-view">
+                      <a class="nav-link active" aria-current="page" href="/">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home align-text-bottom" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                        Dashboard
+                        Inicio
                       </a>
                     </li>
                     <li class="nav-item">
@@ -130,9 +153,9 @@
                       </a>
                     </li> -->
                     <li class="nav-item">
-                      <a class="nav-link" href="#">
+                      <a class="nav-link" href="/dashboard-view">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2 align-text-bottom" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                        Exportar
+                        Dashboard
                       </a>
                     </li>
                     <li class="nav-item">
@@ -179,7 +202,7 @@
               </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h3">Dashboard</h1>
+                    <h1 class="h3">{{title}}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                       <div class="btn-group me-2">
                         <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Share</button> -->

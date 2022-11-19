@@ -62,31 +62,29 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 * Empezar a conectar cada modulo en la interfaz(web) y la Base Datos y los distintos módulos para que funcione como es esperado.
 
 
-## Tareas Foco 5/10/2022
-
-* logueo
+## Tareas Foco 29/10/2022
 * Mejorar interfaz con colores dinamicos
-* Colocar datos en numeros para que se actualice segun su descripción
-* Asociar la vista para que pida la contraseña ADMON usuario y contraseña cuando este en esa vista de subida información//
-* Crear otra base de datos para subir y ver diferencias de procesos con mas revisores/ jaz excel
 * Hacer el borrado de los pdf / (se borra registro bd pero no el archivo)
-
-
-## Presentación al profesor
+* Subir a una API (No prioritatio)
 
 
 ## Tareas no urgentes
-1. Tabla de autenticación (No prioritatio)
-2. Subir a una API (No prioritatio)
+
 3. Revision Docto helper.ipynb
 4. Arreglar modelo de Procesamiento .drawio (No prioritatio)
 5. Actualizar mokup corrección (No prioritatio)
-6. Indicadores definir y calcular (pendiente uno)
-7. Anotar decisiones que se han tomado (Iterativo)
+6. Anotar decisiones que se han tomado (Iterativo)
 
 
 
 # Hecho
+
+23 de oct
+* logueo
+* Colocar datos en numeros para que se actualice segun su descripción
+* Asociar la vista para que pida la contraseña ADMON usuario y contraseña cuando este en esa vista de subida información//
+* Crear otra base de datos para subir y ver diferencias de procesos con mas revisores/ jaz excel
+
 8 de oct
 * Se crea visualizacion de tabla procesado del excel
 * Crear funcion que cuando se cargue el excel del segundo proceso, no se suba dos veves la misma informacion, es decir por cada mes un docts unico
