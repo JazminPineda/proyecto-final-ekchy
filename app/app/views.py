@@ -207,7 +207,7 @@ def xml_upload_period(request):
 
 ## dashboard
 
-
+@login_required
 def dashboard_view(request):
     """Devuelve html vista """
     template = 'dashboard.html'
