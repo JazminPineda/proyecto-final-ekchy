@@ -5,7 +5,7 @@ El anteproyecto está definido en este [documento] (https://docs.google.com/docu
 
 # Mockups
 
-En la carpeta [`mockups`](/mockups/) se encuentran los mockups de la app.
+En la carpeta [`mockups`](https://github.com/JazminPineda/proyecto-final-ekchy/tree/main/docs/mockups) se encuentran los mockups de la app.
 
 # Historias de Usuario
 

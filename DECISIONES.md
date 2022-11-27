@@ -60,6 +60,7 @@ Nota: El proceso anterior se ejecuta cuando estan precargados en la base de dato
 
 
 * Empezar a conectar cada modulo en la interfaz(web) y la Base Datos y los distintos módulos para que funcione como es esperado.
+* Se utilizo como referencia curso Django girls  https://tutorial.djangogirls.org/es/
 
 
 ## Tareas Foco 29/10/2022
