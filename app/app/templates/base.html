@@ -16,7 +16,8 @@
             // Evento que se ejecuta cuando  se carga toda la pagina
             document.addEventListener("DOMContentLoaded",() => {
 
-                $.getJSON("/dashboard-data", function( body ) { //hace la petición a django en la función calcular
+                function getData(month) {
+                  $.getJSON("/dashboard-data?mes=" + month, function( body ) { //hace la petición a django en la función calcular
                     console.log(body)
 
                     var totalImpuestosHoy = document.getElementById('totalImpuestoHoy');
@@ -25,6 +26,23 @@
                     totalImpuestosHoy.textContent  = body.totalImpuestoHoy;
                     impuestosProcesados.textContent = body.impuestosProcesados;
                     impuestosPendientes.textContent = body.impuestosPendientes;
+                    var grafico_1 = Chart.getChart("grafico1"); // <canvas> id
+                    if (grafico_1 != undefined){
+                        grafico_1.destroy();
+                    }
+
+                    var grafico_2 = Chart.getChart("grafico2"); // <canvas> id
+                    if (grafico_2 != undefined){
+                        grafico_2.destroy();
+                    }
+                    var grafico_3 = Chart.getChart("grafico3"); // <canvas> id
+                    if (grafico_3 != undefined){
+                        grafico_3.destroy();
+                    }
+                    var grafico_4 = Chart.getChart("grafico4"); // <canvas> id
+                    if (grafico_4 != undefined){
+                        grafico_4.destroy();
+                    }
 
 
                     var canvasgrafico1 = document.getElementById('grafico1');
@@ -36,10 +54,10 @@
                         scales: {
                             y: {
                                 beginAtZero: true
+                                }
                             }
                         }
-                    }
-                });
+                    });
 
                     var canvasgrafico2 = document.getElementById('grafico2');
                     const grafico2 = new Chart(canvasgrafico2, {
@@ -49,10 +67,10 @@
                         scales: {
                             y: {
                                 beginAtZero: true
+                              }
                             }
                         }
-                    }
-                });
+                    });
 
 
                     var canvasgrafico3 = document.getElementById('grafico3');
@@ -69,8 +87,8 @@
                                 stacked: true
                             }
                             }
-                    }
-                });
+                        }
+                    });
 
                     var canvasgrafico4 = document.getElementById('grafico4');
                     var grafico4 = new Chart(canvasgrafico4, {
@@ -86,9 +104,21 @@
                                 stacked: true
                             }
                         }
-                    }
+                      }
+                      });
                     });
-                });
+
+                    }
+
+                    var selectMeses = document.getElementById('meses');
+                    console.log(selectMeses);
+                    const d = new Date();
+                    let month = d.getMonth();
+                    selectMeses.value = month;
+                    getData(month);
+                    selectMeses.addEventListener("change", () => {
+                      getData(selectMeses.value);
+                    });
             });
         </script>
 </head>

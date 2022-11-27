@@ -212,7 +212,58 @@ def dashboard_view(request):
     """Devuelve html vista """
     template = 'dashboard.html'
     context = {
-        "title" : 'Dashboard'
+        "title" : 'Dashboard',
+        "meses" : [
+            {
+                "name": "Enero",
+                "value": 0
+            },
+            {
+                "name": "Febrero",
+                "value": 1
+            },
+            {
+                "name": "Marzo",
+                "value": 2
+            },
+            {
+                "name": "Abril",
+                "value": 3
+            },
+            {
+                "name": "Mayo",
+                "value": 4
+
+            },
+            {
+                "name": "Junio",
+                "value": 5
+            },
+            {
+                "name": "Julio",
+                "value": 6
+            },
+            {
+                "name": "Agosto",
+                "value": 7
+            },
+            {
+                "name": "Septiembre",
+                "value": 8
+            },
+            {
+                "name": "Octubre",
+                "value": 9
+            },
+            {
+                "name": "Noviembre",
+                "value": 10
+            },
+            {
+                "name": "Diciembre",
+                "value": 11
+            },
+        ]
     }
 
     return render(request, template, context)
@@ -220,6 +271,8 @@ def dashboard_view(request):
 
 def dashboard_API(request):
     """Devuelve los datos de la BD"""
+    mes = int( request.GET['mes'])
+
     context = datos_graficos()
     vencimientos_dic = consultar_vencimientos()
 
@@ -228,18 +281,18 @@ def dashboard_API(request):
     context['grafico3']['data'] = construir_datos_grafico3(vencimientos_dic)
     context['grafico4']['data'] = construir_datos_grafico4(vencimientos_dic)
     context['totalImpuestoHoy'] = calcular_total_impuestos_hoy(vencimientos_dic)
-    context['impuestosProcesados'] = calcular_impuestosprocesados(vencimientos_dic)
-    context['impuestosPendientes']= calcular_impuestospendientes(vencimientos_dic)
+    context['impuestosProcesados'] = calcular_impuestosprocesados(vencimientos_dic, mes=mes)
+    context['impuestosPendientes']= calcular_impuestospendientes(vencimientos_dic , mes=mes)
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 def calcular_total_impuestos_hoy(vencimientos):
     return len(vencimientos)
 
-def calcular_impuestosprocesados(vencimientos):
+def calcular_impuestosprocesados(vencimientos, mes):
     contador = 0
     # AAAA MM DD Mes es en curso NO periodo Fiscal#
-    mes_encurso = date(2022,3,3).month
+    mes_encurso = mes +1
 
     for impuesto in vencimientos:
         if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Procesado':
@@ -247,9 +300,9 @@ def calcular_impuestosprocesados(vencimientos):
     return contador
 
 
-def calcular_impuestospendientes(vencimientos):
+def calcular_impuestospendientes(vencimientos, mes):
     contador = 0
-    mes_encurso = date(2022,3,3).month
+    mes_encurso = mes +1
     for impuesto in vencimientos:
         if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Pendiente':
             contador += 1

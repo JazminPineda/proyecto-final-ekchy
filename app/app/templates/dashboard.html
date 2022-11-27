@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
+<div class="row mb-4">
+  <div class="col-3">
+
+    <select name="meses" id="meses" class="form-select  bg-opacity-25" aria-label="Default select example">
+      <option selected>Elija un mes</option>
+      {% for mes in meses %}
+      <option value="{{mes.value}}">{{mes.name}}</option>
+      {% endfor %}
+  </select>
+
+  </div>
+</div>
 <div class="d-md-flex gap-3">
 
   <!-- <div class=" flex-fill"> -->
