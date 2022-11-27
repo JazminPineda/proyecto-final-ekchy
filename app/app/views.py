@@ -238,7 +238,8 @@ def calcular_total_impuestos_hoy(vencimientos):
 
 def calcular_impuestosprocesados(vencimientos):
     contador = 0
-    mes_encurso = date(2022,5,4).month
+    # AAAA MM DD Mes es en curso NO periodo Fiscal#
+    mes_encurso = date(2022,3,3).month
 
     for impuesto in vencimientos:
         if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Procesado':
@@ -248,7 +249,7 @@ def calcular_impuestosprocesados(vencimientos):
 
 def calcular_impuestospendientes(vencimientos):
     contador = 0
-    mes_encurso = date(2022,5,4).month
+    mes_encurso = date(2022,3,3).month
     for impuesto in vencimientos:
         if impuesto['fecha_vencimiento'].month == mes_encurso and impuesto['proceso'] == 'Pendiente':
             contador += 1
