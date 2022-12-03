@@ -33,7 +33,7 @@ services:
       context: ./proxy
     restart: always
     depends_on:
-      - app
+      - proyectofinalekchy
     ports:
       - 80:8000
     volumes:
