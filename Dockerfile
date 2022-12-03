@@ -1,20 +1,13 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
 FROM python:3.9-alpine3.13
 
-EXPOSE 8000
+ENV PYTHONUNBUFFERED 1
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
-
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
-
-# Install pip requirements
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./scripts /scripts
 COPY ./app /app
 WORKDIR /app
+EXPOSE 8000
 
 ARG DEV=false
 RUN python -m venv /py && \
@@ -38,13 +31,8 @@ RUN python -m venv /py && \
     chmod -R 755 /vol && \
     chmod -R +x /scripts
 
-ENV PATH="/sripts:/py/bin:$PATH"
-
-
-# Creates a non-root user with an explicit UID and adds permission to access the /app folder
-# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
+ENV PATH="/scripts:/py/bin:$PATH"
 
 USER django-user
 
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 CMD ["run.sh"]
