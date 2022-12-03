@@ -20,12 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-91za=5_(q+0h#-$q60f98zf1znqj#)&@k^+&ru%!@n+euinz(w'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "CAMBIAME") # configuracion variables entorno 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get("DEBUG", 0))) # configuracion variables entorno 2
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] # configuracion variables entorno 3 se extiende
+ALLOWED_HOSTS.extend(
+    filter(
+        None,
+        os.environ.get("ALLOWED_HOSTS", '').split(','),
+    )
+)
 
 
 # Application definition
@@ -80,6 +86,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# configuracion variables entorno 4
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
