@@ -15,7 +15,7 @@ se puede visualizar como esta distribuido por etapas el proyecto, en cada etapa 
 
 # Comandos
 
-`docker-compose run --rm proyectofinalekchy sh -c "python manage.py startapp user"`
+`docker-compose run --rm app sh -c "python manage.py startapp user"`
 
 ## Ejecutar un script python en el contexto de django
 1. `make docker-shell`
